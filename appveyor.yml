@@ -32,7 +32,7 @@ install:
   - rustc -V
   - cargo -V
   - git submodule update --init
-  - ps: Get-ChildItem env:
+  - ps: 'Get-ChildItem env:'
 
 clone_depth: 1
 
