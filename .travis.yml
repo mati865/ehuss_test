@@ -1,3 +1,5 @@
 script:
   - env
+  - if [ -t 1 ] ; then echo terminal; else echo "not a terminal"; fi
+  - if [ -t 2 ] ; then echo terminale; else echo "e not a terminal"; fi
 
