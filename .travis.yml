@@ -7,6 +7,14 @@ branches:
     # Uncomment this to enable building pull requests.
     - master
 
+matrix:
+  include:
+    - name: "Bors"
+      if: branch = staging OR branch = trying
+    - name: "PR Open"
+      if: type = pull_request AND branch = master
+
+
 script:
   - env
 
