@@ -5,16 +5,17 @@ branches:
     # This is where pull requests from "bors try" are built.
     - trying
     # Uncomment this to enable building pull requests.
-    - master
+    # - master
 
 matrix:
   include:
     - name: "Bors"
-      if: branch = staging OR branch = trying
+      if: branch = staging
     - name: "PR Open"
       if: type = pull_request AND branch = master
-
+    - name: "Bors Try"
+      if: branch = trying
 
 script:
   - env
-
+  - if [ "$TRAVIS_BRANCH" = "trying" ]; then exit 1; fi
