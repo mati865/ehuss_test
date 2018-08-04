@@ -17,4 +17,4 @@ matrix:
 
 script:
   - env
-
+  - exit: 1
