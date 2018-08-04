@@ -5,7 +5,7 @@ branches:
     # This is where pull requests from "bors try" are built.
     - trying
     # This is for when a pull request is opened.
-    # - master
+    - master
 
 # environment:
 
