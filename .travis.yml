@@ -5,16 +5,19 @@ branches:
     # This is where pull requests from "bors try" are built.
     - trying
     # Uncomment this to enable building pull requests.
-    # - master
+    - master
+
+os:
+  - linux
+  - osx
+
 
 matrix:
-  include:
-    - name: "Bors"
-      if: branch = staging
-    - name: "PR Open"
-      if: type = pull_request AND branch = master
-    - name: "Bors Try"
-      if: branch = trying
+  allow_failures:
+    - os: osx
+  exclude:
+    # Workaround to prevent tests running on master when bors merges.
+    - if: type != pull_request AND branch = master
 
 script:
   - env
