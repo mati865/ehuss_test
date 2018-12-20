@@ -1,0 +1,4 @@
+build: false
+
+test_script:
+  - set
