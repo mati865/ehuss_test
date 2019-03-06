@@ -3,7 +3,7 @@
 echo start sccache
 SCCACHE_IDLE_TIMEOUT=10800 sccache --start-server || true
 
-for x in {1..9}
+for x in {1..10}
 do
     echo "sleeping"
     date
