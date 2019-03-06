@@ -3,7 +3,12 @@
 echo start sccache
 SCCACHE_IDLE_TIMEOUT=10800 sccache --start-server || true
 
-sleep 10
+for x in {1..11}
+do
+    echo "sleeping"
+    date
+    sleep 30
+done
 
 echo "tasklist:"
 tasklist
