@@ -1,24 +1,30 @@
-branches:
-  only:
-    # This is where pull requests from "bors r+" are built.
-    - staging
-    # This is where pull requests from "bors try" are built.
-    - trying
-    # Uncomment this to enable building pull requests.
-    - master
+# branches:
+#   only:
+#     # This is where pull requests from "bors r+" are built.
+#     - staging
+#     # This is where pull requests from "bors try" are built.
+#     - trying
+#     # Uncomment this to enable building pull requests.
+#     - master
 
-os:
-  - linux
-  - osx
-
+# os:
+#   - linux
+#   - osx
 
 matrix:
-  allow_failures:
-    - os: osx
-  exclude:
-    # Workaround to prevent tests running on master when bors merges.
-    - if: type != pull_request AND branch = master
+  - name: "FOO"
+    os: osx
+  - name: "BAR"
+    os: linux
+  # allow_failures:
+  #   - os: osx
+  # exclude:
+  #   # Workaround to prevent tests running on master when bors merges.
+  #   - if: type != pull_request AND branch = master
+
+before_script:
+  - export CI_JOB_NAME=$TRAVIS_JOB_NAME
 
 script:
   - env
-  - if [ "$TRAVIS_BRANCH" = "trying" ]; then exit 1; fi
+  # - if [ "$TRAVIS_BRANCH" = "trying" ]; then exit 1; fi
