@@ -11,6 +11,10 @@
 #   - linux
 #   - osx
 
+env:
+  global:
+    - CI_JOB_NAME=$TRAVIS_JOB_NAME
+
 matrix:
   include:
     - name: "FOO"
@@ -23,8 +27,8 @@ matrix:
   #   # Workaround to prevent tests running on master when bors merges.
   #   - if: type != pull_request AND branch = master
 
-before_script:
-  - export CI_JOB_NAME=$TRAVIS_JOB_NAME
+# before_script:
+#   - export CI_JOB_NAME=$TRAVIS_JOB_NAME
 
 script:
   - env
