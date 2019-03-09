@@ -12,10 +12,11 @@
 #   - osx
 
 matrix:
-  - name: "FOO"
-    os: osx
-  - name: "BAR"
-    os: linux
+  include:
+    - name: "FOO"
+      os: osx
+    - name: "BAR"
+      os: linux
   # allow_failures:
   #   - os: osx
   # exclude:
