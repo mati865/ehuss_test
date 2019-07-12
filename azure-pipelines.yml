@@ -1,0 +1,81 @@
+trigger:
+- master
+
+jobs:
+  - job: MSRV
+    pool:
+      vmImage: ubuntu-16.04
+    # steps:
+      # - template: ci/azure-install-rust.yml
+      # - script: cargo build
+      #   displayName: "Build crate"
+    variables:
+      TOOLCHAIN: 1.32.0
+
+  - job: Linux
+    pool:
+      vmImage: ubuntu-16.04
+    # steps:
+    #   - template: ci/azure-test-all.yml
+    strategy:
+      matrix:
+        stable:
+          TOOLCHAIN: stable
+        beta:
+          TOOLCHAIN: beta
+        nightly:
+          TOOLCHAIN: nightly
+
+  - job: macOS
+    pool:
+      vmImage: macos-10.13
+    # steps:
+    #   - template: ci/azure-test-all.yml
+    # strategy:
+    #   matrix:
+    #     x86_64:
+    #       TARGET: x86_64-apple-darwin
+
+  - job: Windows
+    pool:
+      vmImage: vs2017-win2016
+    # steps:
+    #   - template: ci/azure-test-all.yml
+    strategy:
+      matrix:
+        x86_64-msvc:
+          TOOLCHAIN: stable-x86_64-pc-windows-msvc
+        i686-msvc:
+          TOOLCHAIN: stable-i686-pc-windows-msvc
+
+
+
+steps:
+  - bash: |
+      set -e
+      toolchain=$TOOLCHAIN
+      if [ "$toolchain" = "" ]; then
+        toolchain=stable
+      fi
+      which rustup
+      curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain $toolchain
+      rustup update $toolchain
+      rustup default $toolchain
+      echo "##vso[task.prependpath]$HOME/.cargo/bin"
+    displayName: Install rust (unix)
+    condition: ne( variables['Agent.OS'], 'Windows_NT' )
+
+  - script: |
+      curl -sSf -o rustup-init.exe https://win.rustup.rs
+      which rustup
+      rustup-init.exe -y --default-toolchain %TOOLCHAIN%
+      rustup update %TOOLCHAIN%
+      rustup default %TOOLCHAIN%
+      echo ##vso[task.prependpath]%USERPROFILE%\.cargo\bin
+    displayName: Install rust (windows)
+    condition: eq( variables['Agent.OS'], 'Windows_NT' )
+
+  - script: |
+        rustc -Vv
+        cargo -V
+    displayName: Query rust and cargo versions
