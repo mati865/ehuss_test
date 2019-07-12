@@ -5,8 +5,10 @@ steps:
   # azure image changes in the future.
   - bash: |
       set -ex
+      rustup self uninstall || true
       if [ -x "`command -v rustup`" ]; then
-        echo `command -v rustup` already installed
+        echo `command -v rustup` `rustup -V` already installed
+        rustup self update
       else
         if [ "$Agent.OS" = "Windows_NT" ]; then
           curl -sSf -o rustup-init.exe https://win.rustup.rs
