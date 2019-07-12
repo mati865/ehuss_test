@@ -1,20 +1,20 @@
-environment:
-  matrix:
-  - TARGET: x86_64-pc-windows-msvc
-    OTHER_TARGET: i686-pc-windows-msvc
+# environment:
+#   matrix:
+#   - TARGET: x86_64-pc-windows-msvc
+#     OTHER_TARGET: i686-pc-windows-msvc
 
-install:
-  - appveyor-retry appveyor DownloadFile https://win.rustup.rs/ -FileName rustup-init.exe
-  - rustup-init.exe -y --default-host x86_64-pc-windows-msvc --default-toolchain nightly
-  - set PATH=%PATH%;C:\Users\appveyor\.cargo\bin
-  - rustup component add clippyz || exit 0
-  - rustc -V
-  - cargo -V
-  - git submodule update --init
+# install:
+#   - appveyor-retry appveyor DownloadFile https://win.rustup.rs/ -FileName rustup-init.exe
+#   - rustup-init.exe -y --default-host x86_64-pc-windows-msvc --default-toolchain nightly
+#   - set PATH=%PATH%;C:\Users\appveyor\.cargo\bin
+#   - rustup component add clippyz || exit 0
+#   - rustc -V
+#   - cargo -V
+#   - git submodule update --init
 
-clone_depth: 1
+# clone_depth: 1
 
-build: false
+# build: false
 
-test_script:
-  - echo "hi"
+# test_script:
+#   - echo "hi"
