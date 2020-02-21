@@ -14,4 +14,3 @@ jobs:
         echo "xyz"
     - name: Test 2
       run: echo "zzz"
-    - name: Test 3
