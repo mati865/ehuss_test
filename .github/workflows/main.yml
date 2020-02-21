@@ -1,0 +1,17 @@
+name: CI
+on: [push, pull_request]
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Test1
+      run: |
+        echo "abc"
+        ls asdf
+        echo "xyz"
+    - name: Test 2
+      run: echo "zzz"
+    - name: Test 3
