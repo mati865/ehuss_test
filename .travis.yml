@@ -9,6 +9,7 @@ before_script:
 script:
   - echo "hi"
   - |
+    set -e
     echo "abc"
     ls asdf
     echo "xyz"
