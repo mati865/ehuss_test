@@ -1,8 +1,14 @@
 language: shell
 
+before_script:
+  - |
+    ls /
+    ls abc
+    ls $HOME
+
 script:
   - echo "hi"
-    - |
+  - |
     echo "abc"
     ls asdf
     echo "xyz"
