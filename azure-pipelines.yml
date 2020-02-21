@@ -1,43 +1,14 @@
 trigger:
 - master
 
-jobs:
-  - job: Windows
-    pool:
-      vmImage: windows-2019
-    variables:
-      TOOLCHAIN: beta
-    steps:
-      - bash: |
-          set -e
-          if command -v rustup; then
-            echo `command -v rustup` `rustup -V` already installed
-            rustup self update
-          elif [ "$AGENT_OS" = "Windows_NT" ]; then
-            curl -sSf -o rustup-init.exe https://win.rustup.rs
-            rustup-init.exe -y --default-toolchain $TOOLCHAIN --profile=minimal
-            echo "##vso[task.prependpath]$USERPROFILE/.cargo/bin"
-          else
-            curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain $TOOLCHAIN --profile=minimal
-            echo "##vso[task.prependpath]$HOME/.cargo/bin"
-          fi
-        displayName: Install rustup
-      - bash: |
-          set -e
-          rustc -Vv || echo "not installed"
-          date
-          rustup set profile minimal
-          date
-          rustup component remove --toolchain=$TOOLCHAIN rust-docs || echo "already removed"
-          date
-          rustup update $TOOLCHAIN 2>&1 | gawk '{ print strftime("[%Y-%m-%d %H:%M:%S]"), $0 }'
-          date
-          rustup default $TOOLCHAIN
-          date
-        displayName: Install rust
-      - bash: |
-          set -ex
-          rustup -V
-          rustc -Vv
-          cargo -V
-        displayName: Query rust and cargo versions
+- job: docs
+  pool:
+    vmImage: ubuntu-16.04
+  steps:
+    - bash: |
+        echo "foo"
+        ls asdf
+        echo "bar"
+      displayName: "Test"
+    - bash: echo "abc"
+      displayName: "Test2"

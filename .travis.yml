@@ -1,1 +1,11 @@
 language: shell
+
+script:
+  - echo "hi"
+    - |
+    echo "abc"
+    ls asdf
+    echo "xyz"
+  - echo "again"
+  - ls fdsa
+  - echo "foo"
