@@ -1,16 +1,14 @@
 trigger:
-- master
+  branches:
+    include:
+    - '*'
+    exclude:
+    - master
 
 jobs:
-- job: docs
+- job: test
   pool:
-    vmImage: ubuntu-16.04
+    vmImage: ubuntu-latest
   steps:
-    - bash: |
-        set -e
-        echo "foo"
-        ls asdf
-        echo "bar"
-      displayName: "Test"
     - bash: echo "abc"
       displayName: "Test2"
