@@ -1,18 +1,10 @@
-language: shell
+language: rust
 
-before_script:
-  - |
-    ls /
-    ls abc
-    ls $HOME
+# before_script:
+#   - |
+#     ls /
+#     ls abc
+#     ls $HOME
 
 script:
-  - echo "hi"
-  - |
-    set -e
-    echo "abc"
-    ls asdf
-    echo "xyz"
-  - echo "again"
-  - ls fdsa
-  - echo "foo"
+  - (cd foo; cargo run)
