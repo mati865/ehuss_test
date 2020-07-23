@@ -9,8 +9,9 @@ jobs:
     - uses: actions/checkout@master
     - name: Test1
       run: |
+        ls -al ~/.cargo
         rustup install beta-i686-unknown-linux-gnu
-        sudo apt install -y lib32z1-dev g++-multilib
-        cd gfetch
-        cargo fetch
-        CARGO_LOG=debug cargo +beta-i686-unknown-linux-gnu run
+        cd foo
+        export CARGO_HTTP_DEBUG=true
+        export CARGO_LOG=cargo::ops::registry=trace
+        cargo +beta-i686-unknown-linux-gnu fetch
