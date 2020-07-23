@@ -9,6 +9,7 @@ jobs:
     - uses: actions/checkout@master
     - name: Test1
       run: |
+        ls -al ~/.cargo/
         rustup install beta-i686-unknown-linux-gnu
         cd foo
         cargo +beta-i686-unknown-linux-gnu fetch
