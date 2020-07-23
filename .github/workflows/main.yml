@@ -12,4 +12,4 @@ jobs:
         rustup install beta-i686-unknown-linux-gnu
         cd gfetch
         cargo fetch
-        cargo +beta-i686-unknown-linux-gnu run
+        CARGO_LOG=debug cargo +beta-i686-unknown-linux-gnu run
