@@ -9,7 +9,4 @@ jobs:
     - uses: actions/checkout@master
     - name: Test1
       run: |
-        ls -al ~/.cargo/registry/
-        rustup install 1.42.0-i686-unknown-linux-gnu
-        cd foo
-        cargo +1.42.0-i686-unknown-linux-gnu fetch
+        git fetch --force --update-head-ok 'https://github.com/rust-lang/crates.io-index' 'HEAD:refs/remotes/origin/HEAD'
