@@ -10,6 +10,7 @@ jobs:
     - name: Test1
       run: |
         rustup install beta-i686-unknown-linux-gnu
+        sudo apt install -y lib32z1-dev g++-multilib
         cd gfetch
         cargo fetch
         CARGO_LOG=debug cargo +beta-i686-unknown-linux-gnu run
