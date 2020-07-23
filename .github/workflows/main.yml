@@ -10,6 +10,6 @@ jobs:
     - name: Test1
       run: |
         ls -al ~/.cargo/registry/
-        rustup install nightly-i686-unknown-linux-gnu
+        rustup install stable-i686-unknown-linux-gnu
         cd foo
-        cargo +nightly-i686-unknown-linux-gnu fetch
+        cargo +stable-i686-unknown-linux-gnu fetch
