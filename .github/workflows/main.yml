@@ -9,4 +9,6 @@ jobs:
     - uses: actions/checkout@master
     - name: Test1
       run: |
-        git fetch --force --update-head-ok 'https://github.com/rust-lang/crates.io-index' 'HEAD:refs/remotes/origin/HEAD'
+        cargo -V
+        cd foo
+        cargo fetch
