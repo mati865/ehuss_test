@@ -9,8 +9,6 @@ jobs:
     - uses: actions/checkout@master
     - name: Test1
       run: |
-        echo "abc"
-        ls asdf
-        echo "xyz"
-    - name: Test 2
-      run: echo "zzz"
+        rustup install beta-i686-unknown-linux-gnu
+        cd foo
+        cargo +beta-i686-unknown-linux-gnu fetch
