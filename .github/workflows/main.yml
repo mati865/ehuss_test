@@ -10,6 +10,6 @@ jobs:
     - name: Test1
       run: |
         ls -al ~/.cargo/registry/
-        rustup install 1.43.0-i686-unknown-linux-gnu
+        rustup install 1.42.0-i686-unknown-linux-gnu
         cd foo
-        cargo +1.43.0-i686-unknown-linux-gnu fetch
+        cargo +1.42.0-i686-unknown-linux-gnu fetch
