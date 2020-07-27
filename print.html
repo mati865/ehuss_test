@@ -161,86 +161,6 @@
                 <div id="content" class="content">
                     <main>
                         <h1><a class="header" href="#mdbook" id="mdbook">mdBook</a></h1>
-<pre><code>no language here
-</code></pre>
-<pre><code class="language-plain">plain language here
-what does it do?
-</code></pre>
-<pre><code class="language-text">text language here
-what does it do?
-</code></pre>
-<pre><code class="language-nohighlight">nohiglight
-what does it do?
-</code></pre>
-<pre><code class="language-r">library(ggplot2)
-
-centre &lt;- function(x, type, ...) {
-  switch(type,
-         mean = mean(x),
-         median = median(x),
-         trimmed = mean(x, trim = .1))
-}
-
-myVar1
-myVar.2
-data$x
-foo &quot;bar&quot; baz
-# test &quot;test&quot;
-&quot;test # test&quot;
-
-(123) (1) (10) (0.1) (.2) (1e-7)
-(1.2e+7) (2e) (3e+10) (0x0) (0xa)
-(0xabcdef1234567890) (123L) (1L)
-(0x10L) (10000000L) (1e6L) (1.1L)
-(1e-3L) (4123.381E-10i)
-(3.) (3.E10) # BUG: .E10 should be part of number
-
-# Numbers in some different contexts
-1L
-0x40
-.234
-3.
-1L + 30
-plot(cars, xlim=20)
-plot(cars, xlim=0x20)
-foo&lt;-30
-my.data.3 &lt;- read() # not a number
-c(1,2,3)
-1%%2
-
-&quot;this is a quote that spans
-multiple lines
-\&quot;
-
-is this still a quote? it should be.
-# even still!
-
-&quot; # now we're done.
-
-'same for
-single quotes #'
-
-# keywords
-NULL, NA, TRUE, FALSE, Inf, NaN, NA_integer_,
-NA_real_, NA_character_, NA_complex_, function,
-while, repeat, for, if, in, else, next, break,
-..., ..1, ..2
-
-# not keywords
-the quick brown fox jumped over the lazy dogs
-null na true false inf nan na_integer_ na_real_
-na_character_ na_complex_ Function While Repeat
-For If In Else Next Break .. .... &quot;NULL&quot; `NULL` 'NULL'
-
-# operators
-+, -, *, /, %%, ^, &gt;, &gt;=, &lt;, &lt;=, ==, !=, !, &amp;, |, ~,
--&gt;, &lt;-, &lt;&lt;-, $, :, ::
-
-# infix operator
-foo %union% bar
-%&quot;test&quot;%
-`&quot;test&quot;`
-</code></pre>
 <p><strong>mdBook</strong> is a command line tool and Rust crate to create books using Markdown
 files. It's very similar to Gitbook but written in
 <a href="http://www.rust-lang.org">Rust</a>.</p>
@@ -1915,6 +1835,23 @@ shout-out to them!</p>
 
         
 
+        
+        <!-- Google Analytics Tag -->
+        <script type="text/javascript">
+            var localAddrs = ["localhost", "127.0.0.1", ""];
+
+            // make sure we don't activate google analytics if the developer is
+            // inspecting the book locally...
+            if (localAddrs.indexOf(document.location.hostname) === -1) {
+                (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+                ga('create', 'UA-173660470-1', 'auto');
+                ga('send', 'pageview');
+            }
+        </script>
         
 
         
