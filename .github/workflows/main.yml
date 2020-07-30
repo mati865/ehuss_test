@@ -10,6 +10,6 @@ jobs:
     - name: Test1
       run: |
         ls -al ~/.cargo/registry/
-        rustup install beta-x86_64-unknown-linux-gnu
+        rustup install beta-i686-unknown-linux-gnu
         cd foo
-        cargo +beta-x86_64-unknown-linux-gnu fetch
+        CARGO_HTTP_DEBUG=true CARGO_LOG=cargo::ops::registry=debug cargo +beta-i686-unknown-linux-gnu fetch
