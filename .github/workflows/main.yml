@@ -12,7 +12,7 @@ jobs:
         ls -al ~/.cargo/registry/
         rustup install beta-i686-unknown-linux-gnu
         cd foo
-        CARGO_NET_GIT_FETCH_WITH_CLI=true cargo +beta-i686-unknown-linux-gnu fetch
+        CARGO_HTTP_DEBUG=true CARGO_LOG=cargo::ops::registry=debug cargo +beta-i686-unknown-linux-gnu fetch
 
   test2:
     name: Test2
@@ -24,7 +24,7 @@ jobs:
         ls -al ~/.cargo/registry/
         rustup install beta-i686-unknown-linux-gnu
         cd foo
-        CARGO_NET_GIT_FETCH_WITH_CLI=true cargo +beta-i686-unknown-linux-gnu fetch
+        CARGO_HTTP_DEBUG=true CARGO_LOG=cargo::ops::registry=debug cargo +beta-i686-unknown-linux-gnu fetch
 
   test3:
     name: Test3
@@ -36,7 +36,7 @@ jobs:
         ls -al ~/.cargo/registry/
         rustup install beta-i686-unknown-linux-gnu
         cd foo
-        CARGO_NET_GIT_FETCH_WITH_CLI=true cargo +beta-i686-unknown-linux-gnu fetch
+        CARGO_HTTP_DEBUG=true CARGO_LOG=cargo::ops::registry=debug cargo +beta-i686-unknown-linux-gnu fetch
 
   test4:
     name: Test4
@@ -48,7 +48,7 @@ jobs:
         ls -al ~/.cargo/registry/
         rustup install beta-i686-unknown-linux-gnu
         cd foo
-        CARGO_NET_GIT_FETCH_WITH_CLI=true cargo +beta-i686-unknown-linux-gnu fetch
+        CARGO_HTTP_DEBUG=true CARGO_LOG=cargo::ops::registry=debug cargo +beta-i686-unknown-linux-gnu fetch
 
   test5:
     name: Test5
@@ -60,4 +60,4 @@ jobs:
         ls -al ~/.cargo/registry/
         rustup install beta-i686-unknown-linux-gnu
         cd foo
-        CARGO_NET_GIT_FETCH_WITH_CLI=true cargo +beta-i686-unknown-linux-gnu fetch
+        CARGO_HTTP_DEBUG=true CARGO_LOG=cargo::ops::registry=debug cargo +beta-i686-unknown-linux-gnu fetch
