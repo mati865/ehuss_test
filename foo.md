@@ -1,3 +1,3 @@
 # Foo
 
-Independent 1
+Independent 2
