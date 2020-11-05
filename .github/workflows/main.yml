@@ -8,11 +8,7 @@ jobs:
     steps:
     - uses: actions/checkout@master
     - name: Test1
-      run: |
-        ls -al ~/.cargo/registry/
-        rustup install beta-i686-unknown-linux-gnu
-        cd foo
-        CARGO_HTTP_DEBUG=true CARGO_LOG=cargo::ops::registry=debug cargo +beta-i686-unknown-linux-gnu fetch
+      run: ./legion-test.sh
 
   test2:
     name: Test2
@@ -20,11 +16,7 @@ jobs:
     steps:
     - uses: actions/checkout@master
     - name: Test1
-      run: |
-        ls -al ~/.cargo/registry/
-        rustup install beta-i686-unknown-linux-gnu
-        cd foo
-        CARGO_HTTP_DEBUG=true CARGO_LOG=cargo::ops::registry=debug cargo +beta-i686-unknown-linux-gnu fetch
+      run: ./legion-test.sh
 
   test3:
     name: Test3
@@ -32,11 +24,7 @@ jobs:
     steps:
     - uses: actions/checkout@master
     - name: Test1
-      run: |
-        ls -al ~/.cargo/registry/
-        rustup install beta-i686-unknown-linux-gnu
-        cd foo
-        CARGO_HTTP_DEBUG=true CARGO_LOG=cargo::ops::registry=debug cargo +beta-i686-unknown-linux-gnu fetch
+      run: ./legtion-test.sh
 
   test4:
     name: Test4
@@ -44,20 +32,4 @@ jobs:
     steps:
     - uses: actions/checkout@master
     - name: Test1
-      run: |
-        ls -al ~/.cargo/registry/
-        rustup install beta-i686-unknown-linux-gnu
-        cd foo
-        CARGO_HTTP_DEBUG=true CARGO_LOG=cargo::ops::registry=debug cargo +beta-i686-unknown-linux-gnu fetch
-
-  test5:
-    name: Test5
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@master
-    - name: Test1
-      run: |
-        ls -al ~/.cargo/registry/
-        rustup install beta-i686-unknown-linux-gnu
-        cd foo
-        CARGO_HTTP_DEBUG=true CARGO_LOG=cargo::ops::registry=debug cargo +beta-i686-unknown-linux-gnu fetch
+      run: ./legtion-test.sh
