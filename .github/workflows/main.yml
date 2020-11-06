@@ -2,62 +2,9 @@ name: CI
 on: [push, pull_request]
 
 jobs:
-  test1:
-    name: Test1
-    runs-on: ubuntu-latest
+  build:
+    runs-on: macos-latest
     steps:
-    - uses: actions/checkout@master
-    - name: Test1
-      run: |
-        ls -al ~/.cargo/registry/
-        rustup install beta-i686-unknown-linux-gnu
-        cd foo
-        CARGO_HTTP_DEBUG=true CARGO_LOG=cargo::ops::registry=debug cargo +beta-i686-unknown-linux-gnu fetch
-
-  test2:
-    name: Test2
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@master
-    - name: Test1
-      run: |
-        ls -al ~/.cargo/registry/
-        rustup install beta-i686-unknown-linux-gnu
-        cd foo
-        CARGO_HTTP_DEBUG=true CARGO_LOG=cargo::ops::registry=debug cargo +beta-i686-unknown-linux-gnu fetch
-
-  test3:
-    name: Test3
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@master
-    - name: Test1
-      run: |
-        ls -al ~/.cargo/registry/
-        rustup install beta-i686-unknown-linux-gnu
-        cd foo
-        CARGO_HTTP_DEBUG=true CARGO_LOG=cargo::ops::registry=debug cargo +beta-i686-unknown-linux-gnu fetch
-
-  test4:
-    name: Test4
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@master
-    - name: Test1
-      run: |
-        ls -al ~/.cargo/registry/
-        rustup install beta-i686-unknown-linux-gnu
-        cd foo
-        CARGO_HTTP_DEBUG=true CARGO_LOG=cargo::ops::registry=debug cargo +beta-i686-unknown-linux-gnu fetch
-
-  test5:
-    name: Test5
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@master
-    - name: Test1
-      run: |
-        ls -al ~/.cargo/registry/
-        rustup install beta-i686-unknown-linux-gnu
-        cd foo
-        CARGO_HTTP_DEBUG=true CARGO_LOG=cargo::ops::registry=debug cargo +beta-i686-unknown-linux-gnu fetch
+    - uses: actions/checkout@v1
+    - name: See if we can touch a directory in /System
+      run: sudo touch /System/somefile
