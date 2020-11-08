@@ -20,5 +20,5 @@ do
         -g
 
     # $(xcode-select -p)/usr/bin/python3
-    /usr/bin/python3 lldb_batchmode.py build/test/a pretty-std-collections.debugger.script
+    $(xcode-select -p)/usr/bin/python3 lldb_batchmode.py build/test/a pretty-std-collections.debugger.script
 done
