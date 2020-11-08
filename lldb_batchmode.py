@@ -178,7 +178,7 @@ print("Target executable is '%s'." % target_path)
 print("Current working directory is '%s'" % os.getcwd())
 
 # Start the timeout watchdog
-start_watchdog()
+# start_watchdog()
 
 # Create a new debugger instance
 debugger = lldb.SBDebugger.Create()
@@ -211,7 +211,7 @@ try:
         if command == "run" or command == "r" or re.match("^process\s+launch.*", command):
             # Before starting to run the program, let the thread sleep a bit, so all
             # breakpoint added events can be processed
-            time.sleep(0.5)
+            time.sleep(2)
         if command != '':
             execute_command(command_interpreter, command)
 
