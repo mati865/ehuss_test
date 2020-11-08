@@ -150,7 +150,7 @@ def start_watchdog():
 
     def watchdog():
         while clock() < watchdog_max_time:
-            time.sleep(1)
+            time.sleep(10)
         print("TIMEOUT: lldb_batchmode.py has been running for too long. Aborting!")
         thread.interrupt_main()
 

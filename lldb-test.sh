@@ -13,8 +13,11 @@ mkdir -p build/test
 
 for i in {1..10}
 do
+    echo run $i
     rustc pretty-std-collections.rs \
+        -C prefer-dynamic \
         -o build/test/a \
+        -Crpath \
         -g
 
     # $(xcode-select -p)/usr/bin/python3
