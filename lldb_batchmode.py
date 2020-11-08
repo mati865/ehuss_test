@@ -43,22 +43,6 @@ def normalize_whitespace(s):
     return re.sub("\s+", " ", s)
 
 
-def breakpoint_callback(frame, bp_loc, dict):
-    """This callback is registered with every breakpoint and makes sure that the
-    frame containing the breakpoint location is selected """
-
-    # HACK(eddyb) print a newline to avoid continuing an unfinished line.
-    print("")
-    print("Hit breakpoint " + str(bp_loc))
-
-    # Select the frame and the thread containing it
-    frame.thread.process.SetSelectedThread(frame.thread)
-    frame.thread.SetSelectedFrame(frame.idx)
-
-    # Returning True means that we actually want to stop at this breakpoint
-    return True
-
-
 # This is a list of breakpoints that are not registered with the breakpoint callback. The list is
 # populated by the breakpoint listener and checked/emptied whenever a command has been executed
 new_breakpoints = []
@@ -93,7 +77,7 @@ def execute_command(command_interpreter, command):
                             str(breakpoint_id))
             else:
                 print_debug("registering breakpoint callback, id = " + str(breakpoint_id))
-                callback_command = ("breakpoint command add -F breakpoint_callback " +
+                callback_command = ("breakpoint command add -F lldb_batchmode_support.breakpoint_callback " +
                                     str(breakpoint_id))
                 command_interpreter.HandleCommand(callback_command, res)
                 if res.Succeeded():
@@ -204,6 +188,8 @@ start_breakpoint_listener(target)
 command_interpreter = debugger.GetCommandInterpreter()
 
 try:
+    execute_command(command_interpreter, "command script import 'lldb_batchmode_support.py'")
+
     script_file = open(script_path, 'r')
 
     for line in script_file:
