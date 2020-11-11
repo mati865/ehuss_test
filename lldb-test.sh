@@ -9,6 +9,7 @@ lldb --version
 
 export PYTHONUNBUFFERED=1
 export PYTHONPATH=$(lldb -P)
+export DYLD_PRINT_LIBRARIES=1
 # export DYLD_LIBRARY_PATH=`pwd`
 
 mkdir -p build/test
