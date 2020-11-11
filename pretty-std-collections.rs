@@ -76,11 +76,11 @@
 // lldbr-check:(std::collections::hash::set::HashSet<u64, [...]>) hash_set = size=4 { [0] = 1 [1] = 2 [2] = 3 [3] = 4 }
 
 #![allow(unused_variables)]
-use std::collections::BTreeMap;
-use std::collections::BTreeSet;
+// use std::collections::BTreeMap;
+// use std::collections::BTreeSet;
 use std::collections::HashMap;
-use std::collections::HashSet;
-use std::collections::VecDeque;
+// use std::collections::HashSet;
+// use std::collections::VecDeque;
 use std::hash::{BuildHasherDefault, Hasher};
 
 struct MyLeafNode(i32); // helps to ensure we don't blindly replace substring "LeafNode"
@@ -96,52 +96,52 @@ impl Hasher for SimpleHasher {
 
 fn main() {
     // BTreeSet
-    let mut btree_set = BTreeSet::new();
-    for i in 0..15 {
-        btree_set.insert(i);
-    }
+    // let mut btree_set = BTreeSet::new();
+    // for i in 0..15 {
+    //     btree_set.insert(i);
+    // }
 
-    let mut empty_btree_set: BTreeSet<i32> = BTreeSet::new();
+    // let mut empty_btree_set: BTreeSet<i32> = BTreeSet::new();
 
-    // BTreeMap
-    let mut btree_map = BTreeMap::new();
-    for i in 0..15 {
-        btree_map.insert(i, i);
-    }
+    // // BTreeMap
+    // let mut btree_map = BTreeMap::new();
+    // for i in 0..15 {
+    //     btree_map.insert(i, i);
+    // }
 
-    let mut empty_btree_map: BTreeMap<i32, u32> = BTreeMap::new();
+    // let mut empty_btree_map: BTreeMap<i32, u32> = BTreeMap::new();
 
-    let mut option_btree_map: BTreeMap<bool, Option<bool>> = BTreeMap::new();
-    option_btree_map.insert(false, None);
-    option_btree_map.insert(true, Some(true));
+    // let mut option_btree_map: BTreeMap<bool, Option<bool>> = BTreeMap::new();
+    // option_btree_map.insert(false, None);
+    // option_btree_map.insert(true, Some(true));
 
-    let mut nasty_btree_map: BTreeMap<i32, MyLeafNode> = BTreeMap::new();
-    for i in 0..15 {
-        nasty_btree_map.insert(i, MyLeafNode(i));
-    }
+    // let mut nasty_btree_map: BTreeMap<i32, MyLeafNode> = BTreeMap::new();
+    // for i in 0..15 {
+    //     nasty_btree_map.insert(i, MyLeafNode(i));
+    // }
 
-    let mut zst_key_btree_map: BTreeMap<(), i32> = BTreeMap::new();
-    zst_key_btree_map.insert((), 1);
+    // let mut zst_key_btree_map: BTreeMap<(), i32> = BTreeMap::new();
+    // zst_key_btree_map.insert((), 1);
 
-    let mut zst_val_btree_map: BTreeMap<i32, ()> = BTreeMap::new();
-    zst_val_btree_map.insert(1, ());
+    // let mut zst_val_btree_map: BTreeMap<i32, ()> = BTreeMap::new();
+    // zst_val_btree_map.insert(1, ());
 
-    let mut zst_key_val_btree_map: BTreeMap<(), ()> = BTreeMap::new();
-    zst_key_val_btree_map.insert((), ());
+    // let mut zst_key_val_btree_map: BTreeMap<(), ()> = BTreeMap::new();
+    // zst_key_val_btree_map.insert((), ());
 
-    // VecDeque
-    let mut vec_deque = VecDeque::new();
-    vec_deque.push_back(5);
-    vec_deque.push_back(3);
-    vec_deque.push_back(7);
+    // // VecDeque
+    // let mut vec_deque = VecDeque::new();
+    // vec_deque.push_back(5);
+    // vec_deque.push_back(3);
+    // vec_deque.push_back(7);
 
-    // VecDeque where an element was popped.
-    let mut vec_deque2 = VecDeque::new();
-    for i in 1..8 {
-        vec_deque2.push_back(i)
-    }
-    vec_deque2.pop_front();
-    vec_deque2.push_back(8);
+    // // VecDeque where an element was popped.
+    // let mut vec_deque2 = VecDeque::new();
+    // for i in 1..8 {
+    //     vec_deque2.push_back(i)
+    // }
+    // vec_deque2.pop_front();
+    // vec_deque2.push_back(8);
 
     // HashMap
     let mut hash_map = HashMap::<u64, u64, BuildHasherDefault<SimpleHasher>>::default();
@@ -150,10 +150,10 @@ fn main() {
     }
 
     // HashSet
-    let mut hash_set = HashSet::<u64, BuildHasherDefault<SimpleHasher>>::default();
-    for i in 1..5 {
-        hash_set.insert(i);
-    }
+    // let mut hash_set = HashSet::<u64, BuildHasherDefault<SimpleHasher>>::default();
+    // for i in 1..5 {
+    //     hash_set.insert(i);
+    // }
 
     zzz(); // #break
 }
