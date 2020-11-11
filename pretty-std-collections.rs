@@ -81,18 +81,18 @@
 use std::collections::HashMap;
 // use std::collections::HashSet;
 // use std::collections::VecDeque;
-use std::hash::{BuildHasherDefault, Hasher};
+// use std::hash::{BuildHasherDefault, Hasher};
 
-struct MyLeafNode(i32); // helps to ensure we don't blindly replace substring "LeafNode"
+// struct MyLeafNode(i32); // helps to ensure we don't blindly replace substring "LeafNode"
 
-#[derive(Default)]
-struct SimpleHasher { hash: u64 }
+// #[derive(Default)]
+// struct SimpleHasher { hash: u64 }
 
-impl Hasher for SimpleHasher {
-    fn finish(&self) -> u64 { self.hash }
-    fn write(&mut self, bytes: &[u8]) {}
-    fn write_u64(&mut self, i: u64) { self.hash = i }
-}
+// impl Hasher for SimpleHasher {
+//     fn finish(&self) -> u64 { self.hash }
+//     fn write(&mut self, bytes: &[u8]) {}
+//     fn write_u64(&mut self, i: u64) { self.hash = i }
+// }
 
 fn main() {
     // BTreeSet
@@ -144,7 +144,7 @@ fn main() {
     // vec_deque2.push_back(8);
 
     // HashMap
-    let mut hash_map = HashMap::<u64, u64, BuildHasherDefault<SimpleHasher>>::default();
+    let mut hash_map = HashMap::new();
     for i in 1..5 {
         hash_map.insert(i, i * 10);
     }
