@@ -27,7 +27,7 @@ def summary_lookup(valobj, dict):
     print('summary_lookup type=%r' % (valobj.GetType(),), file=sys.stderr)
     rust_type = classify_rust_type(valobj.GetType())
     print('summary_lookup rust_type=%r' % (rust_type,), file=sys.stderr)
-    return None
+    return ""
 
     if rust_type == RustType.STD_STRING:
         return StdStringSummaryProvider(valobj, dict)
@@ -70,7 +70,7 @@ def synthetic_lookup(valobj, dict):
     print('synthetic_lookup type=%r' % (valobj.GetType(),), file=sys.stderr)
     rust_type = classify_rust_type(valobj.GetType())
     print('synthetic_lookup rust_type=%r' % (rust_type,), file=sys.stderr)
-    return None
+    return DefaultSynthteticProvider(valobj, dict)
 
     if rust_type == RustType.STRUCT:
         return StructSyntheticProvider(valobj, dict)
