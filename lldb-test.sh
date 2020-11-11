@@ -2,7 +2,7 @@
 
 set -ex
 
-# sudo xcode-select -s /Applications/Xcode_11.7.app
+sudo xcode-select -s /Applications/Xcode_12.2.app
 
 echo $(xcode-select -p)
 lldb --version
