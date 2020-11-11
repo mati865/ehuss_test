@@ -2,7 +2,7 @@ settings set auto-confirm true
 version
 command script import lldb_lookup.py
 type synthetic add -l lldb_lookup.synthetic_lookup -x '.*' --category Rust
-type summary add -F lldb_lookup.summary_lookup  -e -x -h '^(std::collections::([a-z_]+::)+)HashMap<.+>$' --category Rust
+type summary add -F lldb_lookup.summary_lookup  -e -x '^(std::collections::([a-z_]+::)+)HashMap<.+>$' --category Rust
 type category enable Rust
 breakpoint set --file 'pretty-std-collections.rs' --line 158
 run
