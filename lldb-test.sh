@@ -2,10 +2,11 @@
 
 set -ex
 
-# sudo xcode-select -s /Applications/Xcode_12.2.app
+sudo xcode-select -s /Applications/Xcode_11.7.app
 
 echo $(xcode-select -p)
 lldb --version
+clang --version
 
 export PYTHONUNBUFFERED=1
 export PYTHONPATH=$(lldb -P)
@@ -17,7 +18,9 @@ for i in {1..10}
 do
     echo run $i
     rustc pretty-std-collections.rs \
+        -C prefer-dynamic \
         -o build/test/a \
+        -Crpath \
         -g
 
     # $(xcode-select -p)/usr/bin/python3
