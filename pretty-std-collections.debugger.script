@@ -21,9 +21,6 @@ type summary add -F lldb_lookup.summary_lookup  -e -x -h '^(core::([a-z_]+::)+)R
 type category enable Rust
 breakpoint set --file 'pretty-std-collections.rs' --line 158
 run
-print vec_deque
-print vec_deque2
 print hash_map
-print hash_set
 
 quit
