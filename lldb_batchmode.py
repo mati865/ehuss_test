@@ -75,18 +75,18 @@ def execute_command(command_interpreter, command):
             if breakpoint_id in registered_breakpoints:
                 print_debug("breakpoint with id %s is already registered. Ignoring." %
                             str(breakpoint_id))
-            else:
-                print_debug("registering breakpoint callback, id = " + str(breakpoint_id))
-                callback_command = ("breakpoint command add -F lldb_batchmode_support.breakpoint_callback " +
-                                    str(breakpoint_id))
-                command_interpreter.HandleCommand(callback_command, res)
-                if res.Succeeded():
-                    print_debug("successfully registered breakpoint callback, id = " +
-                                str(breakpoint_id))
-                    registered_breakpoints.add(breakpoint_id)
-                else:
-                    print("Error while trying to register breakpoint callback, id = " +
-                          str(breakpoint_id) + ", message = " + str(res.GetError()))
+            # else:
+                # print_debug("registering breakpoint callback, id = " + str(breakpoint_id))
+                # callback_command = ("breakpoint command add -F lldb_batchmode_support.breakpoint_callback " +
+                #                     str(breakpoint_id))
+                # command_interpreter.HandleCommand(callback_command, res)
+                # if res.Succeeded():
+                #     print_debug("successfully registered breakpoint callback, id = " +
+                #                 str(breakpoint_id))
+                #     registered_breakpoints.add(breakpoint_id)
+                # else:
+                #     print("Error while trying to register breakpoint callback, id = " +
+                #           str(breakpoint_id) + ", message = " + str(res.GetError()))
     else:
         print(res.GetError())
 
