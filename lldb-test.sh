@@ -9,8 +9,8 @@ lldb --version
 
 export PYTHONUNBUFFERED=1
 export PYTHONPATH=$(lldb -P)
-export DYLD_PRINT_LIBRARIES=1
 # export DYLD_LIBRARY_PATH=`pwd`
+export DYLD_FALLBACK_LIBRARY_PATH=$(rustc --print=sysroot)/lib/rustlib/x86_64-apple-darwin/lib
 
 mkdir -p build/test
 
@@ -20,7 +20,6 @@ do
     rustc pretty-std-collections.rs \
         -C prefer-dynamic \
         -o build/test/a \
-        -Crpath \
         -g
 
     # $(xcode-select -p)/usr/bin/python3
