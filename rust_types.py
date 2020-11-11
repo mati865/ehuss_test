@@ -1,4 +1,5 @@
 import re
+import sys
 
 
 class RustType(object):
@@ -80,6 +81,7 @@ def is_tuple_fields(fields):
 
 
 def classify_struct(name, fields):
+    print('classify_struct name=%r fields=%r' % (name, fields), file=sys.stderr)
     if len(fields) == 0:
         return RustType.EMPTY
 
