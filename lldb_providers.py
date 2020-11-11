@@ -234,10 +234,12 @@ class TupleSyntheticProvider:
 
     def num_children(self):
         # type: () -> int
+        print('tuple num_children=%r' % (self.size,), file=sys.stderr)
         return self.size
 
     def get_child_index(self, name):
         # type: (str) -> int
+        print('tuple get_child_index=%r' % (name,), file=sys.stderr)
         if name.isdigit():
             return int(name)
         else:
@@ -245,6 +247,7 @@ class TupleSyntheticProvider:
 
     def get_child_at_index(self, index):
         # type: (int) -> SBValue
+        print('tuple get_child_at_index=%r' % (index,), file=sys.stderr)
         if self.is_variant:
             field = self.type.GetFieldAtIndex(index + 1)
         else:
@@ -500,10 +503,12 @@ class StdHashMapSyntheticProvider:
 
     def num_children(self):
         # type: () -> int
+        print('num_children=%r' % (self.size,), file=sys.stderr)
         return self.size
 
     def get_child_index(self, name):
         # type: (str) -> int
+        print('get_child_index %r' % (name,), file=sys.stderr)
         index = name.lstrip('[').rstrip(']')
         if index.isdigit():
             return int(index)
@@ -512,6 +517,7 @@ class StdHashMapSyntheticProvider:
 
     def get_child_at_index(self, index):
         # type: (int) -> SBValue
+        print('get_child_at_index %r' % (index,), file=sys.stderr)
         pairs_start = self.data_ptr.GetValueAsUnsigned()
         idx = self.valid_indices[index]
         if self.new_layout:
@@ -526,6 +532,7 @@ class StdHashMapSyntheticProvider:
 
     def update(self):
         # type: () -> None
+        print('update', file=sys.stderr)
         table = self.table()
         capacity = table.GetChildMemberWithName("bucket_mask").GetValueAsUnsigned() + 1
         ctrl = table.GetChildMemberWithName("ctrl").GetChildAtIndex(0)
@@ -554,6 +561,7 @@ class StdHashMapSyntheticProvider:
 
     def table(self):
         # type: () -> SBValue
+        print('table', file=sys.stderr)
         if self.show_values:
             hashbrown_hashmap = self.valobj.GetChildMemberWithName("base")
         else:

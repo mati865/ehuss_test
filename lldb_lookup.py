@@ -1,5 +1,6 @@
 import lldb
 
+import sys
 from lldb_providers import *
 from rust_types import RustType, classify_struct, classify_union
 
@@ -23,6 +24,7 @@ def summary_lookup(valobj, dict):
     # type: (SBValue, dict) -> str
     """Returns the summary provider for the given value"""
     rust_type = classify_rust_type(valobj.GetType())
+    print('summary_lookup rust_type=%r' % (rust_type,), file=sys.stderr)
 
     if rust_type == RustType.STD_STRING:
         return StdStringSummaryProvider(valobj, dict)
@@ -62,6 +64,7 @@ def synthetic_lookup(valobj, dict):
     # type: (SBValue, dict) -> object
     """Returns the synthetic provider for the given value"""
     rust_type = classify_rust_type(valobj.GetType())
+    print('synthetic_lookup rust_type=%r' % (rust_type,), file=sys.stderr)
 
     if rust_type == RustType.STRUCT:
         return StructSyntheticProvider(valobj, dict)
@@ -88,6 +91,7 @@ def synthetic_lookup(valobj, dict):
 
     if rust_type == RustType.STD_HASH_MAP:
         if is_hashbrown_hashmap(valobj):
+            print('is_hashbrown', file=sys.stderr)
             return StdHashMapSyntheticProvider(valobj, dict)
         else:
             return StdOldHashMapSyntheticProvider(valobj, dict)
