@@ -4,7 +4,7 @@ on: [push, pull_request]
 jobs:
   test1:
     name: Test1
-    runs-on: macos-latest
+    runs-on: macos-11.0
     steps:
     - uses: actions/checkout@master
     - name: Test1
@@ -12,7 +12,7 @@ jobs:
 
   test2:
     name: Test2
-    runs-on: macos-latest
+    runs-on: macos-11.0
     steps:
     - uses: actions/checkout@master
     - name: Test1
@@ -20,7 +20,7 @@ jobs:
 
   test3:
     name: Test3
-    runs-on: macos-latest
+    runs-on: macos-11.0
     steps:
     - uses: actions/checkout@master
     - name: Test1
@@ -28,7 +28,7 @@ jobs:
 
   test4:
     name: Test4
-    runs-on: macos-latest
+    runs-on: macos-11.0
     steps:
     - uses: actions/checkout@master
     - name: Test1
