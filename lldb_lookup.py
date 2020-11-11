@@ -63,6 +63,7 @@ def summary_lookup(valobj, dict):
 def synthetic_lookup(valobj, dict):
     # type: (SBValue, dict) -> object
     """Returns the synthetic provider for the given value"""
+    return None
     rust_type = classify_rust_type(valobj.GetType())
     print('synthetic_lookup rust_type=%r' % (rust_type,), file=sys.stderr)
 
