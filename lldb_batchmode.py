@@ -183,7 +183,7 @@ if not target:
 
 
 # Register the breakpoint callback for every breakpoint
-start_breakpoint_listener(target)
+# start_breakpoint_listener(target)
 
 command_interpreter = debugger.GetCommandInterpreter()
 
