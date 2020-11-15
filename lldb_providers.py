@@ -499,6 +499,7 @@ class StdHashMapSyntheticProvider:
         # type: (SBValue, dict, bool) -> StdHashMapSyntheticProvider
         logger = Logger.Logger()
         logger >> "std hash map synthetic provider for " + str(valobj.GetName())
+        logger >> "std hash map synthetic valobj=" + str(valobj)
         self.valobj = valobj
         self.show_values = show_values
         self.update()
@@ -558,10 +559,11 @@ class StdHashMapSyntheticProvider:
         else:
             self.data_ptr = table.GetChildMemberWithName("data").GetChildAtIndex(0)
         logger >> "std hash map data_ptr=" + str(self.data_ptr)
+        logger >> "std hash map target=" + str(self.valobj.GetTarget())
 
         u8_type = self.valobj.GetTarget().GetBasicType(eBasicTypeUnsignedChar)
-        u8_type_size = self.valobj.GetTarget().GetBasicType(eBasicTypeUnsignedChar).GetByteSize()
         logger >> "std hash map u8_type=" + str(u8_type)
+        u8_type_size = self.valobj.GetTarget().GetBasicType(eBasicTypeUnsignedChar).GetByteSize()
         logger >> "std hash map u8_type_size=" + str(u8_type_size)
 
         self.valid_indices = []
