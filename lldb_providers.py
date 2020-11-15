@@ -540,6 +540,7 @@ class StdHashMapSyntheticProvider:
         logger = Logger.Logger()
         logger >> "std hash map update"
         table = self.table()
+        logger >> "std hash map table=" + str(table)
         capacity = table.GetChildMemberWithName("bucket_mask").GetValueAsUnsigned() + 1
         ctrl = table.GetChildMemberWithName("ctrl").GetChildAtIndex(0)
 
@@ -557,6 +558,7 @@ class StdHashMapSyntheticProvider:
         u8_type_size = self.valobj.GetTarget().GetBasicType(eBasicTypeUnsignedChar).GetByteSize()
 
         self.valid_indices = []
+        logger >> "std hash map capacity=" + str(capacity)
         for idx in range(capacity):
             address = ctrl.GetValueAsUnsigned() + idx * u8_type_size
             value = ctrl.CreateValueFromAddress("ctrl[%s]" % idx, address,
@@ -564,6 +566,7 @@ class StdHashMapSyntheticProvider:
             is_present = value & 128 == 0
             if is_present:
                 self.valid_indices.append(idx)
+        logger >> "valid_indices=" + str(self.valid_indices)
 
     def table(self):
         # type: () -> SBValue
@@ -576,6 +579,7 @@ class StdHashMapSyntheticProvider:
             # HashSet wraps either std HashMap or hashbrown::HashSet, which both
             # wrap hashbrown::HashMap, so either way we "unwrap" twice.
             hashbrown_hashmap = self.valobj.GetChildAtIndex(0).GetChildAtIndex(0)
+        logger >> "std hash map table map=" + str(hashbrown_hashmap)
         return hashbrown_hashmap.GetChildMemberWithName("table")
 
     def has_children(self):
