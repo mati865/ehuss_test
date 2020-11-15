@@ -542,29 +542,38 @@ class StdHashMapSyntheticProvider:
         table = self.table()
         logger >> "std hash map table=" + str(table)
         capacity = table.GetChildMemberWithName("bucket_mask").GetValueAsUnsigned() + 1
+        logger >> "std hash map capacity=" + str(capacity)
         ctrl = table.GetChildMemberWithName("ctrl").GetChildAtIndex(0)
+        logger >> "std hash map ctrl=" + str(ctrl)
 
         self.size = table.GetChildMemberWithName("items").GetValueAsUnsigned()
+        logger >> "std hash map size=" + str(self.size)
         self.pair_type = table.type.template_args[0]
         self.pair_type_size = self.pair_type.GetByteSize()
 
         self.new_layout = not table.GetChildMemberWithName("data").IsValid()
+        logger >> "std hash map new_layout=" + str(self.new_layout)
         if self.new_layout:
             self.data_ptr = ctrl.Cast(self.pair_type.GetPointerType())
         else:
             self.data_ptr = table.GetChildMemberWithName("data").GetChildAtIndex(0)
+        logger >> "std hash map data_ptr=" + str(self.data_ptr)
 
         u8_type = self.valobj.GetTarget().GetBasicType(eBasicTypeUnsignedChar)
         u8_type_size = self.valobj.GetTarget().GetBasicType(eBasicTypeUnsignedChar).GetByteSize()
+        logger >> "std hash map u8_type=" + str(u8_type)
+        logger >> "std hash map u8_type_size=" + str(u8_type_size)
 
         self.valid_indices = []
-        logger >> "std hash map capacity=" + str(capacity)
         for idx in range(capacity):
             address = ctrl.GetValueAsUnsigned() + idx * u8_type_size
+            logger >> "std hash map address=" + str(address)
             value = ctrl.CreateValueFromAddress("ctrl[%s]" % idx, address,
                                                 u8_type).GetValueAsUnsigned()
+            logger >> "std hash map value=" + str(value)
             is_present = value & 128 == 0
             if is_present:
+                logger >> "std hash map idx is present=" + str(idx)
                 self.valid_indices.append(idx)
         logger >> "valid_indices=" + str(self.valid_indices)
 
