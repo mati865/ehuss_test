@@ -559,15 +559,17 @@ class StdHashMapSyntheticProvider:
         else:
             self.data_ptr = table.GetChildMemberWithName("data").GetChildAtIndex(0)
         logger >> "std hash map data_ptr=" + str(self.data_ptr)
-        logger >> "std hash map target=" + str(self.valobj.GetTarget())
 
-        u8_type = self.valobj.GetTarget().GetBasicType(eBasicTypeUnsignedChar)
+        target = self.valobj.GetTarget()
+        logger >> "std hash map target=" + str(target)
+        u8_type = target.GetBasicType(eBasicTypeUnsignedChar)
         logger >> "std hash map u8_type=" + str(u8_type)
-        u8_type_size = self.valobj.GetTarget().GetBasicType(eBasicTypeUnsignedChar).GetByteSize()
+        u8_type_size = target.GetBasicType(eBasicTypeUnsignedChar).GetByteSize()
         logger >> "std hash map u8_type_size=" + str(u8_type_size)
 
         self.valid_indices = []
         for idx in range(capacity):
+            logger >> "std hash map idx=" + str(idx)
             address = ctrl.GetValueAsUnsigned() + idx * u8_type_size
             logger >> "std hash map address=" + str(address)
             value = ctrl.CreateValueFromAddress("ctrl[%s]" % idx, address,

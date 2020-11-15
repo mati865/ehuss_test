@@ -31,3 +31,4 @@ do
         exit 1
     fi
 done
+cat lldb.py.log
