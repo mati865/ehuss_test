@@ -181,6 +181,15 @@ if not target:
           str(target_error) + ". Aborting.", file=sys.stderr)
     sys.exit(1)
 
+lldb.formatters.Logger._lldb_formatters_debug_level = 2
+lldb.formatters.Logger._lldb_formatters_debug_filename = "lldb.py.log"
+logger = lldb.formatters.Logger.Logger()
+logger >> "getting type"
+u8_type = target.GetBasicType(lldb.eBasicTypeUnsignedChar)
+logger >> "u8_type=" + str(u8_type)
+u8_type_size = target.GetBasicType(lldb.eBasicTypeUnsignedChar).GetByteSize()
+logger >> "u8_type_size=" + str(u8_type_size)
+
 
 # Register the breakpoint callback for every breakpoint
 # start_breakpoint_listener(target)
