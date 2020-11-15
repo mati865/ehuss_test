@@ -72,6 +72,14 @@ def synthetic_lookup(valobj, dict):
     logger >> "synthetic_lookup " + str(valobj.GetType())
     rust_type = classify_rust_type(valobj.GetType())
     logger >> "synthetic_lookup rust_type=" + repr(rust_type)
+    target = valobj.GetTarget()
+    logger >> "std hash map target=" + str(target)
+    u8_type = target.GetBasicType(lldb.eBasicTypeUnsignedChar)
+    logger >> "std hash map u8_type=" + str(u8_type)
+    u8_type_size = target.GetBasicType(lldb.eBasicTypeUnsignedChar).GetByteSize()
+    logger >> "std hash map u8_type_size=" + str(u8_type_size)
+    return None
+
 
     if rust_type == RustType.STRUCT:
         return StructSyntheticProvider(valobj, dict)
