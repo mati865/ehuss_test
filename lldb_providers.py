@@ -3,7 +3,7 @@ import sys
 from lldb import SBValue, SBData, SBError, eBasicTypeLong, eBasicTypeUnsignedLong, \
     eBasicTypeUnsignedChar
 
-# from lldb.formatters import Logger
+from lldb.formatters import Logger
 
 ####################################################################################################
 # This file contains two kinds of pretty-printers: summary and synthetic.
@@ -70,8 +70,8 @@ def unwrap_unique_or_non_null(unique_or_nonnull):
 class DefaultSynthteticProvider:
     def __init__(self, valobj, dict):
         # type: (SBValue, dict) -> DefaultSynthteticProvider
-        # logger = Logger.Logger()
-        # logger >> "Default synthetic provider for " + str(valobj.GetName())
+        logger = Logger.Logger()
+        logger >> "Default synthetic provider for " + str(valobj.GetName())
         self.valobj = valobj
 
     def num_children(self):
@@ -98,8 +98,8 @@ class DefaultSynthteticProvider:
 class EmptySyntheticProvider:
     def __init__(self, valobj, dict):
         # type: (SBValue, dict) -> EmptySyntheticProvider
-        # logger = Logger.Logger()
-        # logger >> "[EmptySyntheticProvider] for " + str(valobj.GetName())
+        logger = Logger.Logger()
+        logger >> "[EmptySyntheticProvider] for " + str(valobj.GetName())
         self.valobj = valobj
 
     def num_children(self):
@@ -136,16 +136,16 @@ def vec_to_string(vec):
 
 def StdStringSummaryProvider(valobj, dict):
     # type: (SBValue, dict) -> str
-    # logger = Logger.Logger()
-    # logger >> "[StdStringSummaryProvider] for " + str(valobj.GetName())
+    logger = Logger.Logger()
+    logger >> "[StdStringSummaryProvider] for " + str(valobj.GetName())
     vec = valobj.GetChildAtIndex(0)
     return '"%s"' % vec_to_string(vec)
 
 
 def StdOsStringSummaryProvider(valobj, dict):
     # type: (SBValue, dict) -> str
-    # logger = Logger.Logger()
-    # logger >> "[StdOsStringSummaryProvider] for " + str(valobj.GetName())
+    logger = Logger.Logger()
+    logger >> "[StdOsStringSummaryProvider] for " + str(valobj.GetName())
     buf = valobj.GetChildAtIndex(0).GetChildAtIndex(0)
     is_windows = "Wtf8Buf" in buf.type.name
     vec = buf.GetChildAtIndex(0) if is_windows else buf
@@ -154,8 +154,8 @@ def StdOsStringSummaryProvider(valobj, dict):
 
 def StdStrSummaryProvider(valobj, dict):
     # type: (SBValue, dict) -> str
-    # logger = Logger.Logger()
-    # logger >> "[StdStrSummaryProvider] for " + str(valobj.GetName())
+    logger = Logger.Logger()
+    logger >> "[StdStrSummaryProvider] for " + str(valobj.GetName())
 
     length = valobj.GetChildMemberWithName("length").GetValueAsUnsigned()
     if length == 0:
@@ -276,8 +276,8 @@ class StdVecSyntheticProvider:
 
     def __init__(self, valobj, dict):
         # type: (SBValue, dict) -> StdVecSyntheticProvider
-        # logger = Logger.Logger()
-        # logger >> "[StdVecSyntheticProvider] for " + str(valobj.GetName())
+        logger = Logger.Logger()
+        logger >> "[StdVecSyntheticProvider] for " + str(valobj.GetName())
         self.valobj = valobj
         self.update()
 
@@ -360,8 +360,8 @@ class StdVecDequeSyntheticProvider:
 
     def __init__(self, valobj, dict):
         # type: (SBValue, dict) -> StdVecDequeSyntheticProvider
-        # logger = Logger.Logger()
-        # logger >> "[StdVecDequeSyntheticProvider] for " + str(valobj.GetName())
+        logger = Logger.Logger()
+        logger >> "[StdVecDequeSyntheticProvider] for " + str(valobj.GetName())
         self.valobj = valobj
         self.update()
 
@@ -497,18 +497,22 @@ class StdHashMapSyntheticProvider:
 
     def __init__(self, valobj, dict, show_values=True):
         # type: (SBValue, dict, bool) -> StdHashMapSyntheticProvider
+        logger = Logger.Logger()
+        logger >> "std hash map synthetic provider for " + str(valobj.GetName())
         self.valobj = valobj
         self.show_values = show_values
         self.update()
 
     def num_children(self):
         # type: () -> int
-        print('num_children=%r' % (self.size,), file=sys.stderr)
+        logger = Logger.Logger()
+        logger >> "std hash map num_children=" + str(self.size)
         return self.size
 
     def get_child_index(self, name):
         # type: (str) -> int
-        print('get_child_index %r' % (name,), file=sys.stderr)
+        logger = Logger.Logger()
+        logger >> "std hash map get_child_index=" + str(name)
         index = name.lstrip('[').rstrip(']')
         if index.isdigit():
             return int(index)
@@ -517,7 +521,8 @@ class StdHashMapSyntheticProvider:
 
     def get_child_at_index(self, index):
         # type: (int) -> SBValue
-        print('get_child_at_index %r' % (index,), file=sys.stderr)
+        logger = Logger.Logger()
+        logger >> "std hash map get_child_at_index=" + str(index)
         pairs_start = self.data_ptr.GetValueAsUnsigned()
         idx = self.valid_indices[index]
         if self.new_layout:
@@ -532,7 +537,8 @@ class StdHashMapSyntheticProvider:
 
     def update(self):
         # type: () -> None
-        print('update', file=sys.stderr)
+        logger = Logger.Logger()
+        logger >> "std hash map update"
         table = self.table()
         capacity = table.GetChildMemberWithName("bucket_mask").GetValueAsUnsigned() + 1
         ctrl = table.GetChildMemberWithName("ctrl").GetChildAtIndex(0)
@@ -561,7 +567,8 @@ class StdHashMapSyntheticProvider:
 
     def table(self):
         # type: () -> SBValue
-        print('table', file=sys.stderr)
+        logger = Logger.Logger()
+        logger >> "std hash map table"
         if self.show_values:
             hashbrown_hashmap = self.valobj.GetChildMemberWithName("base")
         else:

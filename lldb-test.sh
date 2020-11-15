@@ -2,7 +2,7 @@
 
 set -ex
 
-sudo xcode-select -s /Applications/Xcode_12.2.app
+# sudo xcode-select -s /Applications/Xcode_12.2.app
 
 echo $(xcode-select -p)
 lldb --version
@@ -24,5 +24,10 @@ do
         -g
 
     # $(xcode-select -p)/usr/bin/python3
-    $(xcode-select -p)/usr/bin/python3 lldb_batchmode.py build/test/a pretty-std-collections.debugger.script
+    if ! $(xcode-select -p)/usr/bin/python3 lldb_batchmode.py build/test/a pretty-std-collections.debugger.script
+    then
+        echo failed $?
+        cat lldb.py.log
+        exit 1
+    fi
 done

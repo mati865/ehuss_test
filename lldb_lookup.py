@@ -66,10 +66,12 @@ def summary_lookup(valobj, dict):
 def synthetic_lookup(valobj, dict):
     # type: (SBValue, dict) -> object
     """Returns the synthetic provider for the given value"""
-    print('synthetic_lookup', file=sys.stderr)
-    print('synthetic_lookup type=%r' % (valobj.GetType(),), file=sys.stderr)
+    lldb.formatters.Logger._lldb_formatters_debug_level = 2
+    lldb.formatters.Logger._lldb_formatters_debug_filename = "lldb.py.log"
+    logger = lldb.formatters.Logger.Logger()
+    logger >> "synthetic_lookup " + str(valobj.GetType())
     rust_type = classify_rust_type(valobj.GetType())
-    print('synthetic_lookup rust_type=%r' % (rust_type,), file=sys.stderr)
+    logger >> "synthetic_lookup rust_type=" + repr(rust_type)
 
     if rust_type == RustType.STRUCT:
         return StructSyntheticProvider(valobj, dict)
@@ -96,10 +98,10 @@ def synthetic_lookup(valobj, dict):
 
     if rust_type == RustType.STD_HASH_MAP:
         if is_hashbrown_hashmap(valobj):
-            print('is hashbrown', file=sys.stderr)
+            logger >> "synthetic_lookup is hashbrown"
             return StdHashMapSyntheticProvider(valobj, dict)
         else:
-            print('is not hashbrown', file=sys.stderr)
+            logger >> "synthetic_lookup is not hashbrown"
             return StdOldHashMapSyntheticProvider(valobj, dict)
     if rust_type == RustType.STD_HASH_SET:
         hash_map = valobj.GetChildAtIndex(0)
