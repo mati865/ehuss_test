@@ -9,55 +9,8 @@ jobs:
     - uses: actions/checkout@master
     - name: Test1
       run: |
-        ls -al ~/.cargo/registry/
-        rustup install beta-i686-unknown-linux-gnu
-        cd foo
-        CARGO_HTTP_DEBUG=true CARGO_LOG=cargo::ops::registry=debug cargo +beta-i686-unknown-linux-gnu fetch
-
-  test2:
-    name: Test2
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@master
-    - name: Test1
-      run: |
-        ls -al ~/.cargo/registry/
-        rustup install beta-i686-unknown-linux-gnu
-        cd foo
-        CARGO_HTTP_DEBUG=true CARGO_LOG=cargo::ops::registry=debug cargo +beta-i686-unknown-linux-gnu fetch
-
-  test3:
-    name: Test3
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@master
-    - name: Test1
-      run: |
-        ls -al ~/.cargo/registry/
-        rustup install beta-i686-unknown-linux-gnu
-        cd foo
-        CARGO_HTTP_DEBUG=true CARGO_LOG=cargo::ops::registry=debug cargo +beta-i686-unknown-linux-gnu fetch
-
-  test4:
-    name: Test4
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@master
-    - name: Test1
-      run: |
-        ls -al ~/.cargo/registry/
-        rustup install beta-i686-unknown-linux-gnu
-        cd foo
-        CARGO_HTTP_DEBUG=true CARGO_LOG=cargo::ops::registry=debug cargo +beta-i686-unknown-linux-gnu fetch
-
-  test5:
-    name: Test5
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@master
-    - name: Test1
-      run: |
-        ls -al ~/.cargo/registry/
-        rustup install beta-i686-unknown-linux-gnu
-        cd foo
-        CARGO_HTTP_DEBUG=true CARGO_LOG=cargo::ops::registry=debug cargo +beta-i686-unknown-linux-gnu fetch
+        rustc --version
+        which cargo
+        which rustc
+        ls -al ~/.cargo
+        ls -al ~/.cargo/bin
