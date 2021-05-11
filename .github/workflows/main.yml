@@ -4,13 +4,13 @@ on: [push, pull_request]
 jobs:
   test1:
     name: Test1
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
     - uses: actions/checkout@master
     - name: Test1
       run: |
+        rustup --version
         rustc --version
         which cargo
         which rustc
-        ls -al ~/.cargo
-        ls -al ~/.cargo/bin
+        rustup self update
