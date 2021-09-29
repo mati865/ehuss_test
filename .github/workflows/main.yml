@@ -13,6 +13,7 @@ jobs:
         set -x
         env
         which lldb
-        rm /c/Program\ Files/LLVM/bin/lldb.exe
+        du -sh /c/Program\ Files/LLVM/*
+        time rm -rf /c/Program\ Files/LLVM
         lldb --version || true
         lldb -P || true
