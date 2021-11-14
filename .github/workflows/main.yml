@@ -4,16 +4,26 @@ on: [push, pull_request]
 jobs:
   test1:
     name: Test1
-    runs-on: windows-latest
+    runs-on: macos-latest
     steps:
     - uses: actions/checkout@master
     - name: Test1
       shell: bash
       run: |
-        set -x
-        env
-        which lldb
-        du -sh /c/Program\ Files/LLVM/*
-        time rm -rf /c/Program\ Files/LLVM
-        lldb --version || true
-        lldb -P || true
+        SUBLIME_TEXT="Sublime Text"
+        STP="$HOME/Library/Application Support/Sublime Text/Packages"
+        curl -L https://download.sublimetext.com/sublime_text_build_4121_mac.zip -o ~/Downloads/sublimetext.zip
+        mkdir -p "$HOME/Applications"
+        unzip ~/Downloads/sublimetext.zip -d "$HOME/Applications/"
+        mkdir -p $HOME/.local/bin
+        ln -s "$HOME/Applications/$SUBLIME_TEXT.app/Contents/SharedSupport/bin/subl" \
+            $HOME/.local/bin/subl
+        echo creating sublime package directory
+        mkdir -p "$STP/User"
+        # make sure a new window will be opened
+        echo '{"close_windows_when_empty": false }' > "$STP/User/Preferences.sublime-settings"
+        open "$HOME/Applications/$SUBLIME_TEXT.app"
+        sleep 2
+        pkill '[Ss]ubl' || true
+        pkill 'plugin_host' || true
+        sleep 2
