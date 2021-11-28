@@ -22,6 +22,7 @@ jobs:
         mkdir -p "$STP/User"
         # make sure a new window will be opened
         echo '{"close_windows_when_empty": false }' > "$STP/User/Preferences.sublime-settings"
+        /System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -f "$HOME/Applications/$SUBLIME_TEXT.app"
         open "$HOME/Applications/$SUBLIME_TEXT.app"
         sleep 2
         pkill '[Ss]ubl' || true
