@@ -1,0 +1,3 @@
+[submodule "toml-rs"]
+	path = toml-rs
+	url = git@github.com:alexcrichton/toml-rs.git
