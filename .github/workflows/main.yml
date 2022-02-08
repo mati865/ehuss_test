@@ -4,25 +4,14 @@ on: [push, pull_request]
 jobs:
   test1:
     name: Test1
-    runs-on: windows-latest
+    runs-on: windows-2019
     steps:
     - uses: actions/checkout@master
     - name: Test1
       shell: bash
       run: |
-        rustup toolchain install nightly-x86_64-pc-windows-msvc
-        rustup default nightly-x86_64-pc-windows-msvc
-        for i in {1..100}
-        do
-          echo $i
-          rustc -O -O foo.rs
-          rustc -O -C opt-level=0 foo.rs
-          rustc -C opt-level=0 -O foo.rs
-          rustc -C opt-level=0 -C opt-level=2 foo.rs
-          rustc -C opt-level=2 -C opt-level=0 foo.rs
-          rustc -g -g foo.rs
-          rustc -g -C debuginfo=0 foo.rs
-          rustc -C debuginfo=0 -g foo.rs
-          rustc -C debuginfo=0 -C debuginfo=2 foo.rs
-          rustc -C debuginfo=2 -C debuginfo=0 foo.rs
-        done
+        ls /c/Program\ Files\ \(x86\)
+        ls /c/Program\ Files\ \(x86\)/Windows\ Kits
+        ls /c/Program\ Files\ \(x86\)/Windows\ Kits/10
+        ls /c/Program\ Files\ \(x86\)/Windows\ Kits/10/Debuggers
+        ls /c/Program\ Files\ \(x86\)/Windows\ Kits/10/Debuggers/x64
