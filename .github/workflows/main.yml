@@ -10,8 +10,4 @@ jobs:
     - name: Test1
       shell: bash
       run: |
-        ls /c/Program\ Files\ \(x86\)
-        ls /c/Program\ Files\ \(x86\)/Windows\ Kits
-        ls /c/Program\ Files\ \(x86\)/Windows\ Kits/10
-        ls /c/Program\ Files\ \(x86\)/Windows\ Kits/10/Debuggers
-        ls /c/Program\ Files\ \(x86\)/Windows\ Kits/10/Debuggers/x64
+        pwd
