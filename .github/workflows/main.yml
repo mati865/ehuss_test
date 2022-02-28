@@ -4,13 +4,11 @@ on: [push, pull_request]
 jobs:
   test1:
     name: Test1
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
     - uses: actions/checkout@master
     - name: Test1
       shell: bash
       run: |
-        echo $CARGO_HOME
-        find ~/.cargo
-        rustup self uninstall -y || true
-        find ~/.cargo
+        curl -f -sSL -o llvm-project.tar.gz https://github.com/rust-lang/llvm-project/archive/e29ac13bc97e26f886c3bfe72f9135e994c3cd0a.tar.gz
+        tar -C llvm-project --strip-components=1 -xf llvm-project.tar.gz
