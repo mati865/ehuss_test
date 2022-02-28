@@ -11,4 +11,5 @@ jobs:
       shell: bash
       run: |
         curl -f -sSL -o llvm-project.tar.gz https://github.com/rust-lang/llvm-project/archive/e29ac13bc97e26f886c3bfe72f9135e994c3cd0a.tar.gz
+        mkdir llvm-project
         tar -C llvm-project --strip-components=1 -xf llvm-project.tar.gz
