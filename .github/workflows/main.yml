@@ -10,16 +10,5 @@ jobs:
     - name: Test1
       shell: bash
       run: |
-        msys2Path="c:/msys64"
-        mkdir -p "${msys2Path}/home/${USERNAME}"
-        echo "${msys2Path}/usr/bin" >> "${GITHUB_PATH}"
-        mingw_dir="mingw64"
-        curl -o mingw.7z "https://ci-mirrors.rust-lang.org/rustc/x86_64-6.3.0-release-posix-seh-rt_v5-rev2.7z"
-        7z x -y mingw.7z > /dev/null
-        echo "$(pwd)/${mingw_dir}/bin" >> "${GITHUB_PATH}"
-        which tar
-        tar --version
-        curl -f -sSL -o llvm-project.tar.gz https://github.com/rust-lang/llvm-project/archive/e29ac13bc97e26f886c3bfe72f9135e994c3cd0a.tar.gz
-        mkdir -p src/llvm-project
-        export MSYS=winsymlinks:nativestrict
-        tar -C src/llvm-project --strip-components=1 -xf llvm-project.tar.gz
+        cd foo
+        cargo run
