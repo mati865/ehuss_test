@@ -1,18 +1,19 @@
 #![allow(unused)]
-use std::os::windows::ffi::OsStrExt;
 use std::ffi::OsStr;
 use std::mem::*;
+use std::os::windows::ffi::OsStrExt;
+use std::path::*;
 use std::process::Command;
 use std::ptr;
 use tempfile::TempDir;
 use winapi::ctypes::c_void;
 use winapi::shared::minwindef::*;
+use winapi::um::accctrl::*;
+use winapi::um::aclapi::*;
 use winapi::um::processthreadsapi::*;
 use winapi::um::securitybaseapi::*;
 use winapi::um::winbase::*;
 use winapi::um::winnt::*;
-use winapi::um::aclapi::*;
-use winapi::um::accctrl::*;
 
 fn output(cmd: &mut Command) {
     println!("{cmd:?}");
@@ -27,12 +28,7 @@ fn output(cmd: &mut Command) {
     }
 }
 
-fn main() {
-    let td = TempDir::new().unwrap();
-    println!("{:?}", td.path());
-    output(Command::new("ls").arg("-al").arg(td.path()));
-    output(Command::new("who").arg("am").arg("i"));
-
+fn check(path: &Path) {
     unsafe {
         let mut token = std::mem::zeroed();
         let mut len: DWORD = 0;
@@ -96,10 +92,17 @@ fn main() {
         let mut owner_sid: PSID = ptr::null_mut();
         let mut descriptor = ptr::null_mut();
 
-        let path_w32 = wstr(td.path().to_str().unwrap());
-        let ret = GetNamedSecurityInfoW(path_w32.as_ptr(), SE_FILE_OBJECT,
-        OWNER_SECURITY_INFORMATION | DACL_SECURITY_INFORMATION,
-        &mut owner_sid, ptr::null_mut(), ptr::null_mut(), ptr::null_mut(), &mut descriptor);
+        let path_w32 = wstr(path.to_str().unwrap());
+        let ret = GetNamedSecurityInfoW(
+            path_w32.as_ptr(),
+            SE_FILE_OBJECT,
+            OWNER_SECURITY_INFORMATION | DACL_SECURITY_INFORMATION,
+            &mut owner_sid,
+            ptr::null_mut(),
+            ptr::null_mut(),
+            ptr::null_mut(),
+            &mut descriptor,
+        );
         if ret != 0 {
             panic!("ret={}", ret);
         }
@@ -112,6 +115,23 @@ fn main() {
     }
 }
 
+fn main() {
+    let td = TempDir::new().unwrap();
+    println!("{:?}", td.path());
+    output(Command::new("ls").arg("-al").arg(td.path()));
+    output(Command::new("who").arg("am").arg("i"));
+    check(td.path());
+    let mut slashed = PathBuf::from(td.path());
+    slashed.push("");
+    check(&slashed);
+    let slashed = td.path().to_str().unwrap();
+    let slashed = slashed.replace("\\", "/");
+    let mut slashed = PathBuf::from(slashed);
+    check(&slashed);
+    slashed.push("");
+    check(&slashed);
+}
+
 fn wstr(s: &str) -> Vec<u16> {
     let mut wide: Vec<u16> = OsStr::new(s).encode_wide().collect();
     if wide.iter().any(|b| *b == 0) {
@@ -120,7 +140,6 @@ fn wstr(s: &str) -> Vec<u16> {
     wide.push(0);
     wide
 }
-
 
 fn from_wide_ptr(ptr: *const u16) -> String {
     use std::ffi::OsString;
