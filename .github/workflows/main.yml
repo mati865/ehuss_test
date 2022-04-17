@@ -4,7 +4,7 @@ on: [push, pull_request]
 jobs:
   test1:
     name: Test1
-    runs-on: windows-2019
+    runs-on: windows-latest
     steps:
     - uses: actions/checkout@master
     - name: Test1
