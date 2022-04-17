@@ -135,7 +135,7 @@ fn check(path: &Path) {
     }
 }
 
-fn main() {
+fn doit() {
     let td = TempDir::new().unwrap();
     println!("{:?}", td.path());
     output(Command::new("ls").arg("-al").arg(td.path()));
@@ -150,6 +150,10 @@ fn main() {
     check(&slashed_p);
     let slashed_p = PathBuf::from(slashed + "/");
     check(&slashed_p);
+}
+
+fn main() {
+    doit();
 }
 
 fn wstr(s: &str) -> Vec<u16> {
@@ -172,4 +176,9 @@ fn from_wide_ptr(ptr: *const u16) -> String {
         let slice = std::slice::from_raw_parts(ptr, len);
         OsString::from_wide(slice).to_string_lossy().into_owned()
     }
+}
+
+#[test]
+fn from_test() {
+    doit();
 }
