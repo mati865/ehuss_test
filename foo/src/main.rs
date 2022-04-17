@@ -10,6 +10,7 @@ use winapi::ctypes::c_void;
 use winapi::shared::minwindef::*;
 use winapi::um::accctrl::*;
 use winapi::um::aclapi::*;
+use winapi::um::handleapi::*;
 use winapi::um::processthreadsapi::*;
 use winapi::um::securitybaseapi::*;
 use winapi::um::winbase::*;
@@ -28,7 +29,21 @@ fn output(cmd: &mut Command) {
     }
 }
 
+fn sid_dup(sid: PSID) -> PSID {
+    unsafe {
+        let len = GetLengthSid(sid);
+        let dup: Vec<u8> = Vec::with_capacity(len as usize);
+        if CopySid(len, dup.as_ptr() as PSID, sid) == 0 {
+            panic!("can't copy");
+        }
+        let p = dup.as_ptr() as PSID;
+        std::mem::forget(dup);
+        p
+    }
+}
+
 fn check(path: &Path) {
+    println!("check {path:?}");
     unsafe {
         let mut token = std::mem::zeroed();
         let mut len: DWORD = 0;
@@ -52,13 +67,16 @@ fn check(path: &Path) {
             panic!("gettokeninformation2 {:?}", std::io::Error::last_os_error());
         }
         let info = buf.as_ptr() as *const TOKEN_USER;
+        let user_sid_dup = sid_dup((*info).User.Sid);
+
+        CloseHandle(token);
 
         let mut cc_name = 0;
         let mut cc_domainname = 0;
         let mut pe_use = 0;
         let _ = LookupAccountSidW(
             ptr::null::<u16>() as *mut u16,
-            (*info).User.Sid,
+            user_sid_dup,
             ptr::null::<u16>() as *mut u16,
             &mut cc_name,
             ptr::null::<u16>() as *mut u16,
@@ -72,7 +90,7 @@ fn check(path: &Path) {
         domainname.set_len(cc_domainname as usize);
         let ret = LookupAccountSidW(
             ptr::null::<u16>() as *mut u16,
-            (*info).User.Sid,
+            user_sid_dup,
             name.as_mut_ptr() as *mut u16,
             &mut cc_name,
             domainname.as_mut_ptr() as *mut u16,
@@ -106,8 +124,10 @@ fn check(path: &Path) {
         if ret != 0 {
             panic!("ret={}", ret);
         }
+        let owner_sid_dup = sid_dup(owner_sid);
+        LocalFree(descriptor);
 
-        if EqualSid(owner_sid, (*info).User.Sid) == 1 {
+        if EqualSid(owner_sid_dup, user_sid_dup) == 1 {
             println!("Equal");
         } else {
             println!("not equal");
@@ -126,10 +146,10 @@ fn main() {
     check(&slashed);
     let slashed = td.path().to_str().unwrap();
     let slashed = slashed.replace("\\", "/");
-    let mut slashed = PathBuf::from(slashed);
-    check(&slashed);
-    slashed.push("");
-    check(&slashed);
+    let slashed_p = PathBuf::from(&slashed);
+    check(&slashed_p);
+    let slashed_p = PathBuf::from(slashed + "/");
+    check(&slashed_p);
 }
 
 fn wstr(s: &str) -> Vec<u16> {
