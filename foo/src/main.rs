@@ -160,9 +160,13 @@ fn check(path: &Path) {
 
 fn doit() {
     // let tmp_path = std::env::temp_dir().join(".tmp1234");
-    let tmp_path = PathBuf::from("foo");
+    let tmp_path = PathBuf::from("bar");
+    if tmp_path.exists() {
+        std::fs::remove_dir(&tmp_path).unwrap();
+    }
     std::fs::create_dir(&tmp_path).unwrap();
     // let td = TempDir::new().unwrap();
+    // let tmp_path = td.path();
     println!("{:?}", tmp_path);
     output(Command::new("ls").arg("-al").arg(&tmp_path));
     output(Command::new("who").arg("am").arg("i"));
