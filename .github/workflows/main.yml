@@ -28,13 +28,11 @@ jobs:
     # - name: Install Rust (rustup)
     #   run: rustup update ${{ matrix.rust }} --no-self-update && rustup default ${{ matrix.rust }}
     #   shell: bash
-    - shell: bash
-      run: |
+    - run: |
         cd foo
         rustc -Vv
         cargo -Vv
         cargo run
-        cargo test -- --nocapture
 
 
   # test1:
