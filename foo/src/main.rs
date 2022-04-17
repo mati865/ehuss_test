@@ -1,4 +1,6 @@
 #![allow(unused)]
+use std::os::windows::ffi::OsStrExt;
+use std::ffi::OsStr;
 use std::mem::*;
 use std::process::Command;
 use std::ptr;
@@ -9,6 +11,8 @@ use winapi::um::processthreadsapi::*;
 use winapi::um::securitybaseapi::*;
 use winapi::um::winbase::*;
 use winapi::um::winnt::*;
+use winapi::um::aclapi::*;
+use winapi::um::accctrl::*;
 
 fn output(cmd: &mut Command) {
     println!("{cmd:?}");
@@ -88,8 +92,35 @@ fn main() {
         let domainname = from_wide_ptr(domainname.as_ptr());
 
         println!("name={name}");
+
+        let mut owner_sid: PSID = ptr::null_mut();
+        let mut descriptor = ptr::null_mut();
+
+        let path_w32 = wstr(td.path().to_str().unwrap());
+        let ret = GetNamedSecurityInfoW(path_w32.as_ptr(), SE_FILE_OBJECT,
+        OWNER_SECURITY_INFORMATION | DACL_SECURITY_INFORMATION,
+        &mut owner_sid, ptr::null_mut(), ptr::null_mut(), ptr::null_mut(), &mut descriptor);
+        if ret != 0 {
+            panic!("ret={}", ret);
+        }
+
+        if EqualSid(owner_sid, (*info).User.Sid) == 1 {
+            println!("Equal");
+        } else {
+            println!("not equal");
+        }
     }
 }
+
+fn wstr(s: &str) -> Vec<u16> {
+    let mut wide: Vec<u16> = OsStr::new(s).encode_wide().collect();
+    if wide.iter().any(|b| *b == 0) {
+        panic!("nul byte in wide string");
+    }
+    wide.push(0);
+    wide
+}
+
 
 fn from_wide_ptr(ptr: *const u16) -> String {
     use std::ffi::OsString;
