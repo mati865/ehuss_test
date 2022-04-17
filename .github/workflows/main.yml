@@ -25,6 +25,15 @@ jobs:
             rust: stable
     steps:
     - uses: actions/checkout@master
+    - uses: actions/cache@v3
+      with:
+        path: |
+          ~/.cargo/bin/
+          ~/.cargo/registry/index/
+          ~/.cargo/registry/cache/
+          ~/.cargo/git/db/
+          foo/target/
+        key: ${{ runner.os }}-cargo
     # - name: Install Rust (rustup)
     #   run: rustup update ${{ matrix.rust }} --no-self-update && rustup default ${{ matrix.rust }}
     #   shell: bash
