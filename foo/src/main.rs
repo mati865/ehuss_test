@@ -42,6 +42,46 @@ fn sid_dup(sid: PSID) -> PSID {
     }
 }
 
+fn print_user(sid: PSID) {
+    unsafe {
+        let mut cc_name = 0;
+        let mut cc_domainname = 0;
+        let mut pe_use = 0;
+        let _ = LookupAccountSidW(
+            ptr::null::<u16>() as *mut u16,
+            sid,
+            ptr::null::<u16>() as *mut u16,
+            &mut cc_name,
+            ptr::null::<u16>() as *mut u16,
+            &mut cc_domainname,
+            &mut pe_use,
+        );
+
+        let mut name: Vec<u16> = Vec::with_capacity(cc_name as usize);
+        let mut domainname: Vec<u16> = Vec::with_capacity(cc_domainname as usize);
+        name.set_len(cc_name as usize);
+        domainname.set_len(cc_domainname as usize);
+        let ret = LookupAccountSidW(
+            ptr::null::<u16>() as *mut u16,
+            sid,
+            name.as_mut_ptr() as *mut u16,
+            &mut cc_name,
+            domainname.as_mut_ptr() as *mut u16,
+            &mut cc_domainname,
+            &mut pe_use,
+        );
+
+        if ret == 0 {
+            panic!("lookup");
+        }
+
+        let name = from_wide_ptr(name.as_ptr());
+        let domainname = from_wide_ptr(domainname.as_ptr());
+
+        println!("name={name}");
+    }
+}
+
 fn check(path: &Path) {
     println!("check {path:?}");
     unsafe {
@@ -71,42 +111,6 @@ fn check(path: &Path) {
 
         CloseHandle(token);
 
-        let mut cc_name = 0;
-        let mut cc_domainname = 0;
-        let mut pe_use = 0;
-        let _ = LookupAccountSidW(
-            ptr::null::<u16>() as *mut u16,
-            user_sid_dup,
-            ptr::null::<u16>() as *mut u16,
-            &mut cc_name,
-            ptr::null::<u16>() as *mut u16,
-            &mut cc_domainname,
-            &mut pe_use,
-        );
-
-        let mut name: Vec<u16> = Vec::with_capacity(cc_name as usize);
-        let mut domainname: Vec<u16> = Vec::with_capacity(cc_domainname as usize);
-        name.set_len(cc_name as usize);
-        domainname.set_len(cc_domainname as usize);
-        let ret = LookupAccountSidW(
-            ptr::null::<u16>() as *mut u16,
-            user_sid_dup,
-            name.as_mut_ptr() as *mut u16,
-            &mut cc_name,
-            domainname.as_mut_ptr() as *mut u16,
-            &mut cc_domainname,
-            &mut pe_use,
-        );
-
-        if ret == 0 {
-            panic!("lookup");
-        }
-
-        let name = from_wide_ptr(name.as_ptr());
-        let domainname = from_wide_ptr(domainname.as_ptr());
-
-        println!("name={name}");
-
         let mut owner_sid: PSID = ptr::null_mut();
         let mut descriptor = ptr::null_mut();
 
@@ -127,6 +131,8 @@ fn check(path: &Path) {
         let owner_sid_dup = sid_dup(owner_sid);
         LocalFree(descriptor);
 
+        print_user(owner_sid_dup);
+        print_user(user_sid_dup);
         if EqualSid(owner_sid_dup, user_sid_dup) == 1 {
             println!("Equal");
         } else {
