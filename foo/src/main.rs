@@ -1,5 +1,14 @@
-use tempfile::TempDir;
+#![allow(unused)]
+use std::mem::*;
 use std::process::Command;
+use std::ptr;
+use tempfile::TempDir;
+use winapi::ctypes::c_void;
+use winapi::shared::minwindef::*;
+use winapi::um::processthreadsapi::*;
+use winapi::um::securitybaseapi::*;
+use winapi::um::winbase::*;
+use winapi::um::winnt::*;
 
 fn output(cmd: &mut Command) {
     println!("{cmd:?}");
@@ -19,4 +28,78 @@ fn main() {
     println!("{:?}", td.path());
     output(Command::new("ls").arg("-al").arg(td.path()));
     output(Command::new("who").arg("am").arg("i"));
+
+    unsafe {
+        let mut token = std::mem::zeroed();
+        let mut len: DWORD = 0;
+        if OpenProcessToken(GetCurrentProcess(), TOKEN_QUERY, &mut token as *mut HANDLE) != 1 {
+            panic!("process token error");
+        }
+
+        if GetTokenInformation(token, TokenUser, ptr::null_mut(), 0, &mut len as *mut DWORD) == 1 {
+            panic!("gettokeninformation");
+        }
+
+        let mut buf = Vec::with_capacity(len as usize);
+        if GetTokenInformation(
+            token,
+            TokenUser,
+            buf.as_mut_ptr() as *mut c_void,
+            len,
+            &mut len as *mut DWORD,
+        ) != 1
+        {
+            panic!("gettokeninformation2 {:?}", std::io::Error::last_os_error());
+        }
+        let info = buf.as_ptr() as *const TOKEN_USER;
+
+        let mut cc_name = 0;
+        let mut cc_domainname = 0;
+        let mut pe_use = 0;
+        let _ = LookupAccountSidW(
+            ptr::null::<u16>() as *mut u16,
+            (*info).User.Sid,
+            ptr::null::<u16>() as *mut u16,
+            &mut cc_name,
+            ptr::null::<u16>() as *mut u16,
+            &mut cc_domainname,
+            &mut pe_use,
+        );
+
+        let mut name: Vec<u16> = Vec::with_capacity(cc_name as usize);
+        let mut domainname: Vec<u16> = Vec::with_capacity(cc_domainname as usize);
+        name.set_len(cc_name as usize);
+        domainname.set_len(cc_domainname as usize);
+        let ret = LookupAccountSidW(
+            ptr::null::<u16>() as *mut u16,
+            (*info).User.Sid,
+            name.as_mut_ptr() as *mut u16,
+            &mut cc_name,
+            domainname.as_mut_ptr() as *mut u16,
+            &mut cc_domainname,
+            &mut pe_use,
+        );
+
+        if ret == 0 {
+            panic!("lookup");
+        }
+
+        let name = from_wide_ptr(name.as_ptr());
+        let domainname = from_wide_ptr(domainname.as_ptr());
+
+        println!("name={name}");
+    }
+}
+
+fn from_wide_ptr(ptr: *const u16) -> String {
+    use std::ffi::OsString;
+    use std::os::windows::ffi::OsStringExt;
+    unsafe {
+        assert!(!ptr.is_null());
+        let len = (0..std::isize::MAX)
+            .position(|i| *ptr.offset(i) == 0)
+            .unwrap();
+        let slice = std::slice::from_raw_parts(ptr, len);
+        OsString::from_wide(slice).to_string_lossy().into_owned()
+    }
 }
