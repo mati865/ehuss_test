@@ -5,7 +5,7 @@ use std::os::windows::ffi::OsStrExt;
 use std::path::*;
 use std::process::Command;
 use std::ptr;
-use tempfile::TempDir;
+// use tempfile::TempDir;
 use winapi::ctypes::c_void;
 use winapi::shared::minwindef::*;
 use winapi::shared::sddl::*;
@@ -159,7 +159,8 @@ fn check(path: &Path) {
 }
 
 fn doit() {
-    let tmp_path = std::env::temp_dir().join(".tmp1234");
+    // let tmp_path = std::env::temp_dir().join(".tmp1234");
+    let tmp_path = PathBuf::from("foo");
     std::fs::create_dir(&tmp_path).unwrap();
     // let td = TempDir::new().unwrap();
     println!("{:?}", tmp_path);
