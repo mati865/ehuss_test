@@ -11,4 +11,5 @@ jobs:
       shell: bash
       run: |
         cd foo
+        cargo -V
         cargo run
