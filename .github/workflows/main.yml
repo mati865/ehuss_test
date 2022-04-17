@@ -34,7 +34,6 @@ jobs:
         rustc -Vv
         cargo -Vv
         cargo run
-        cargo test -- --nocapture
 
 
   # test1:
