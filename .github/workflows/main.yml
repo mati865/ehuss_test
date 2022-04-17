@@ -26,12 +26,13 @@ jobs:
             rust: stable
     steps:
     - uses: actions/checkout@master
-    - name: Install Rust (rustup)
-      run: rustup update ${{ matrix.rust }} --no-self-update && rustup default ${{ matrix.rust }}
-      shell: bash
+    # - name: Install Rust (rustup)
+    #   run: rustup update ${{ matrix.rust }} --no-self-update && rustup default ${{ matrix.rust }}
+    #   shell: bash
     - run: |
         cd foo
-        cargo -V
+        rustc -Vv
+        cargo -Vv
         cargo run
         cargo test
 
