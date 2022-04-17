@@ -1,5 +1,5 @@
 #![allow(unused)]
-use std::ffi::OsStr;
+use std::ffi::{CStr, OsStr};
 use std::mem::*;
 use std::os::windows::ffi::OsStrExt;
 use std::path::*;
@@ -8,6 +8,7 @@ use std::ptr;
 use tempfile::TempDir;
 use winapi::ctypes::c_void;
 use winapi::shared::minwindef::*;
+use winapi::shared::sddl::*;
 use winapi::um::accctrl::*;
 use winapi::um::aclapi::*;
 use winapi::um::handleapi::*;
@@ -131,6 +132,22 @@ fn check(path: &Path) {
         let owner_sid_dup = sid_dup(owner_sid);
         LocalFree(descriptor);
 
+        let mut owner_sid_str: LPSTR = zeroed();
+        if ConvertSidToStringSidA(owner_sid_dup, &mut owner_sid_str) == 0 {
+            panic!("SidToString");
+        }
+        let mut user_sid_str: LPSTR = zeroed();
+        if ConvertSidToStringSidA(user_sid_dup, &mut user_sid_str) == 0 {
+            panic!("SidToString");
+        }
+        let owner_ss = CStr::from_ptr(owner_sid_str);
+        let user_ss = CStr::from_ptr(user_sid_str);
+        println!(
+            "owner={} user={}",
+            owner_ss.to_str().unwrap(),
+            user_ss.to_str().unwrap()
+        );
+
         print_user(owner_sid_dup);
         print_user(user_sid_dup);
         if EqualSid(owner_sid_dup, user_sid_dup) == 1 {
@@ -142,20 +159,27 @@ fn check(path: &Path) {
 }
 
 fn doit() {
-    let td = TempDir::new().unwrap();
-    println!("{:?}", td.path());
-    output(Command::new("ls").arg("-al").arg(td.path()));
+    let tmp_path = std::env::temp_dir().join(".tmp1234");
+    std::fs::create_dir(&tmp_path).unwrap();
+    // let td = TempDir::new().unwrap();
+    println!("{:?}", tmp_path);
+    output(Command::new("ls").arg("-al").arg(&tmp_path));
     output(Command::new("who").arg("am").arg("i"));
-    check(td.path());
-    let mut slashed = PathBuf::from(td.path());
-    slashed.push("");
-    check(&slashed);
-    let slashed = td.path().to_str().unwrap();
-    let slashed = slashed.replace("\\", "/");
-    let slashed_p = PathBuf::from(&slashed);
-    check(&slashed_p);
-    let slashed_p = PathBuf::from(slashed + "/");
-    check(&slashed_p);
+    output(
+        Command::new("powershell")
+            .arg("-Command")
+            .arg(format!("get-acl {} | format-list", tmp_path.display())),
+    );
+    check(&tmp_path);
+    // let mut slashed = PathBuf::from(&tmp_path);
+    // slashed.push("");
+    // check(&slashed);
+    // let slashed = tmp_path.to_str().unwrap();
+    // let slashed = slashed.replace("\\", "/");
+    // let slashed_p = PathBuf::from(&slashed);
+    // check(&slashed_p);
+    // let slashed_p = PathBuf::from(slashed + "/");
+    // check(&slashed_p);
 }
 
 fn main() {
