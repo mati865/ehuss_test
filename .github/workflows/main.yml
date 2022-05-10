@@ -18,30 +18,30 @@ jobs:
           # - build: nightly
           #   os: ubuntu-latest
           #   rust: nightly
-          # - build: macos
-          #   os: macos-latest
-          #   rust: stable
-          - os: windows-latest
+          - build: macos
+            os: macos-latest
             rust: stable
+          # - os: windows-latest
+          #   rust: stable
     steps:
     - uses: actions/checkout@master
-    - uses: actions/cache@v3
-      with:
-        path: |
-          ~/.cargo/bin/
-          ~/.cargo/registry/index/
-          ~/.cargo/registry/cache/
-          ~/.cargo/git/db/
-          foo/target/
-        key: ${{ runner.os }}-cargo
+    # - uses: actions/cache@v3
+    #   with:
+    #     path: |
+    #       ~/.cargo/bin/
+    #       ~/.cargo/registry/index/
+    #       ~/.cargo/registry/cache/
+    #       ~/.cargo/git/db/
+    #       foo/target/
+    #     key: ${{ runner.os }}-cargo
     # - name: Install Rust (rustup)
     #   run: rustup update ${{ matrix.rust }} --no-self-update && rustup default ${{ matrix.rust }}
     #   shell: bash
     - run: |
-        cd foo
-        rustc -Vv
-        cargo -Vv
-        cargo run
+        touch a
+        python -c 'import os;print(os.stat("a").st_mtime)'
+        touch a
+        python -c 'import os;print(os.stat("a").st_mtime)'
 
 
   # test1:
