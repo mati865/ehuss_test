@@ -38,6 +38,9 @@ jobs:
     #   run: rustup update ${{ matrix.rust }} --no-self-update && rustup default ${{ matrix.rust }}
     #   shell: bash
     - run: |
+        set -x
+        which make
+        which mingw32-make
         make --version
         mingw32-make --version
       shell: bash
