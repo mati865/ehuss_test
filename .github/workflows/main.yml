@@ -3,47 +3,10 @@ name: Test
 on: [push, pull_request]
 
 jobs:
-  bash:
-    name: ${{ matrix.os }} / bash / ${{ matrix.command }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: ["windows-2019", "windows-2022"]
-        command: ["cargo --help", "rustup --help", "python --help", "git --help"]
-
+  test:
+    runs-on: ubuntu-latest
     steps:
-    - run: ${{ matrix.command }}
-      shell: bash
-    - run: ${{ matrix.command }}
-      shell: bash
-
-  pwsh:
-    name: ${{ matrix.os }} / pwsh / ${{ matrix.command }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: ["windows-2019", "windows-2022"]
-        command: ["cargo --help", "rustup --help", "python --help", "git --help"]
-
-    steps:
-    - run: ${{ matrix.command }}
-      shell: pwsh
-    - run: ${{ matrix.command }}
-      shell: pwsh
-
-  powershell:
-    name: ${{ matrix.os }} / powershell / ${{ matrix.command }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: ["windows-2019", "windows-2022"]
-        command: ["cargo --help", "rustup --help", "python --help", "git --help"]
-
-    steps:
-    - run: ${{ matrix.command }}
-      shell: powershell
-    - run: ${{ matrix.command }}
-      shell: powershell
+    - run: |
+        ls -al /etc/ssh/ssh_known_hosts
+        cat /etc/ssh/ssh_known_hosts
+        mv /etc/ssh/ssh_known_hosts /etc/ssh/ssh_known_hosts.bak
