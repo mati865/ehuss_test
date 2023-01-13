@@ -7,6 +7,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - run: |
-        ls -al /etc/ssh/ssh_known_hosts
-        cat /etc/ssh/ssh_known_hosts
-        mv /etc/ssh/ssh_known_hosts /etc/ssh/ssh_known_hosts.bak
+        ps -jaxww
