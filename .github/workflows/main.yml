@@ -7,6 +7,11 @@ jobs:
     runs-on: windows-latest
     steps:
     - run: |
-        perl --version
-        Get-Command perl
-      # shell: bash
+        ( IFS=:
+          for p in $PATH
+          do
+            echo $p
+            ls -al $p || true
+          done
+        )
+      shell: bash
