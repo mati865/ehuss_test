@@ -4,46 +4,19 @@ on: [push, pull_request]
 jobs:
   test:
     name: Test
-    if: ${{ false }}  # disable for now
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        # build: [windows]
-        include:
-          # - build: stable
-          #   os: ubuntu-latest
-          #   rust: stable
-          # - build: beta
-          #   os: ubuntu-latest
-          #   rust: beta
-          # - build: nightly
-          #   os: ubuntu-latest
-          #   rust: nightly
-          # - build: macos
-          #   os: macos-latest
-          #   rust: stable
-          - os: windows-latest
-          #   rust: stable
+    runs-on: windows-2019
     steps:
     - uses: actions/checkout@master
-    # - uses: actions/cache@v3
-    #   with:
-    #     path: |
-    #       ~/.cargo/bin/
-    #       ~/.cargo/registry/index/
-    #       ~/.cargo/registry/cache/
-    #       ~/.cargo/git/db/
-    #       foo/target/
-    #     key: ${{ runner.os }}-cargo
-    # - name: Install Rust (rustup)
-    #   run: rustup update ${{ matrix.rust }} --no-self-update && rustup default ${{ matrix.rust }}
-    #   shell: bash
     - run: |
-        set -x
-        which make
-        which mingw32-make
-        make --version
-        mingw32-make --version
+        curl -o mingw.7z "https://ci-mirrors.rust-lang.org/rustc/i686-12.2.0-release-posix-dwarf-rt_v10-rev0.7z"
+        7z x -y mingw.7z > /dev/null
+        export PATH=`pwd`/mingw32/bin:$PATH
+        which ar
+        ar --version
+        ranlib --version
+        for n in {1..400}; do rm -f lib/libLLVMAVRAsmParser.a && ar qc lib/libLLVMAVRAsmParser.a lib/Target/AVR/AsmParser/CMakeFiles/LLVMAVRAsmParser.dir/AVRAsmParser.cpp.obj && ranlib.exe lib/libLLVMAVRAsmParser.a; done &
+        for n in {1..400}; do rm -f lib/libLLVMSparcCodeGen.a && ar qc lib/libLLVMSparcCodeGen.a lib/Target/Sparc/CMakeFiles/LLVMSparcCodeGen.dir/*.obj && ranlib.exe lib/libLLVMSparcCodeGen.a; done
+        echo "done"
       shell: bash
 
 
