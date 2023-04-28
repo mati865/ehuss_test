@@ -29,7 +29,7 @@ jobs:
         mkdir -p /tmp/awscli-deps
         curl https://ci-mirrors.rust-lang.org/rustc/2019-07-27-awscli.tar | tar xf - -C /tmp/awscli-deps
         pip --version
-        pip install setuptools
+        python -m pip install --upgrade pip
         pip install --no-index "--find-links=/tmp/awscli-deps" awscli
       shell: bash
 
