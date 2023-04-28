@@ -25,9 +25,7 @@ jobs:
     steps:
     - uses: actions/checkout@master
     - run: |
-        cd awscli
-        pip --version
-        pip install --verbose --no-index "--find-links=." awscli
+        ./install-awscli.sh
       shell: bash
 
 
