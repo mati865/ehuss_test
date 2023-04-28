@@ -26,10 +26,9 @@ jobs:
     steps:
     - uses: actions/checkout@master
     - run: |
-        mkdir -p /tmp/awscli-deps
-        curl https://ci-mirrors.rust-lang.org/rustc/2019-07-27-awscli.tar | tar xf - -C /tmp/awscli-deps
+        cd awscli
         pip --version
-        pip install --verbose --no-index "--find-links=/tmp/awscli-deps" awscli
+        pip install --verbose --no-index "--find-links=." awscli
       shell: bash
 
 
