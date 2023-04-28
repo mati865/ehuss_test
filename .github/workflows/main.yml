@@ -4,7 +4,6 @@ on: [push, pull_request]
 jobs:
   test:
     name: Test
-    if: ${{ false }}  # disable for now
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -26,24 +25,11 @@ jobs:
           #   rust: stable
     steps:
     - uses: actions/checkout@master
-    # - uses: actions/cache@v3
-    #   with:
-    #     path: |
-    #       ~/.cargo/bin/
-    #       ~/.cargo/registry/index/
-    #       ~/.cargo/registry/cache/
-    #       ~/.cargo/git/db/
-    #       foo/target/
-    #     key: ${{ runner.os }}-cargo
-    # - name: Install Rust (rustup)
-    #   run: rustup update ${{ matrix.rust }} --no-self-update && rustup default ${{ matrix.rust }}
-    #   shell: bash
     - run: |
-        set -x
-        which make
-        which mingw32-make
-        make --version
-        mingw32-make --version
+        mkdir -p /tmp/awscli-deps
+        curl https://ci-mirrors.rust-lang.org/rustc/2019-07-27-awscli.tar | tar xf - -C /tmp/awscli-deps
+        pip --version
+        pip install --no-index "--find-links=/tmp/awscli-deps" awscli
       shell: bash
 
 
