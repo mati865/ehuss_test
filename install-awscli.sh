@@ -30,6 +30,8 @@ if isLinux; then
 
     sudo apt-get install -y python3-setuptools python3-wheel
     ciCommandAddPath "${HOME}/.local/bin"
+elif isMacOS; then
+    pip="pip3"
 fi
 "${pip}" --version
 
