@@ -9,8 +9,8 @@ jobs:
     - uses: actions/checkout@master
     - run: |
         # curl -o mingw.7z "https://ci-mirrors.rust-lang.org/rustc/i686-12.2.0-release-posix-dwarf-rt_v10-rev0.7z"
-        7z x -y i686-12.2.0-release-posix-dwarf-msvcrt-rt_v10.0.0-rev0.7z > /dev/null
-        export PATH=`pwd`/mingw32/bin:$PATH
+        7z x -y mingw64.7z > /dev/null
+        export PATH=`pwd`/mingw64/bin:`pwd`/mingw64/x86_64-w64-mingw32/bin:$PATH
         set -m
         which ar
         ar --version
